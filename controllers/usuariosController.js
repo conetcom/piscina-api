@@ -4,7 +4,7 @@ const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
     const { id, nombre, email, password } = req.body;
-    console.log('req.body');
+    //console.log('req.body');
     const hashedPassword = await bcrypt.hash(password, 10);
     await usuariosModel.createUsuario(id, nombre, email, hashedPassword);
     res.status(201).json({ mensaje: 'Usuario registrado' });
