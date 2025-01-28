@@ -11,14 +11,14 @@ exports.obtenerProductoPorId = async (req, res) => {
 };
 
 exports.crearProducto = async (req, res) => {
-    const { nombre, precio } = req.body;
-    await productosModel.createProducto(nombre, precio);
-    res.status(201).send('Producto creado');
+    const { id_piscina, id_cliente, ph, orp, st_bomba,st_light } = req.body;
+    await productosModel.createProducto(id_piscina, id_cliente,ph, orp, st_bomba, st_light);
+    res.status(201).send('registro lectura almacenado');
 };
 
 exports.actualizarProducto = async (req, res) => {
-    const { nombre, precio } = req.body;
-    await productosModel.updateProducto(req.params.id, nombre, precio);
+    const { id_piscina, id_cliente, ph, orp, st_bomba,st_light } = req.body;
+    await productosModel.updateProducto(req.params.id, id_piscina, id_cliente, ph, orp, st_bomba, st_light);
     res.send('Producto actualizado');
 };
 

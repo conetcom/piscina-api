@@ -2,11 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const authMiddleware = (req, res, next) => {
-<<<<<<< HEAD
     const token = req.header('Authorization');
-=======
-   const token = req.header('Authorization');
->>>>>>> 312ac85780e5b1e20a54d51920c94b3321b074b0
     if (!token) return res.status(401).json({ mensaje: 'Acceso denegado' });
 
     try {

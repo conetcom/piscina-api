@@ -6,16 +6,16 @@ const getProductos = async () => {
 };
 
 const getProductoById = async (id) => {
-    const result = await pool.query('SELECT * FROM piscina WHERE id = $1', [id_cliente]);
+    const result = await pool.query('SELECT * FROM piscina WHERE id = $1', [id_piscina]);
     return result.rows[0];
 };
 
-const createProducto = async (id_cliente, ph, orp, st_bomba, st_ligth) => {
-    await pool.query('INSERT INTO piscina (id_cliente, ph, orp, st_bomba, st_ligth) VALUES ($1, $2, $3, $4, $%)', [id_cliente, ph, orp, st_bomba, st_ligth]);
+const createProducto = async (id_piscina, id_cliente, ph, orp, st_bomba, st_ligth) => {
+    await pool.query('INSERT INTO piscina (id_piscina, id_cliente, ph, orp, st_bomba, st_light) VALUES ($1, $2, $3, $4, $5, $6)', [id_piscina, id_cliente, ph, orp, st_bomba, st_ligth]);
 };
 
 const updateProducto = async (id_cliente, ph, orp, st_bomba, st_ligth) => {
-    await pool.query('UPDATE productos SET id_cliente = $1, ph = $2, orp= $3, st_bomba = $4 WHERE id = $5', [id_cliente, ph, orp, st_bomba, st_ligth]);
+    await pool.query('UPDATE productos SET id_piscina= $1, id_cliente = $2, ph = $3, orp= $4, st_bomba = $5. st_light = $6 WHERE id = $1', [id_piscina, id_cliente, ph, orp, st_bomba, st_light]);
 };
 
 const deleteProducto = async (id_cliente) => {
