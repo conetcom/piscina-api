@@ -5,6 +5,8 @@ const usuariosRoutes = require('./routes/usuariosRoutes');
 
 const app = express();
 app.use(cors());
+const cors = require("cors");
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
 app.use('/api/usuarios', usuariosRoutes);
