@@ -4,8 +4,13 @@ const productosRoutes = require('./routes/productosRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 
 const app = express();
+app.use(cors({
+    origin: "http://localhost:5173", // Permitir peticiones desde tu frontend
+    credentials: true, // Habilitar cookies si las usas
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    allowedHeaders: ["Content-Type", "Authorization"] // Headers permitidos
+  }));
 app.use(cors());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
 app.use('/api/usuarios', usuariosRoutes);
