@@ -5,21 +5,16 @@ const usuariosRoutes = require('./routes/usuariosRoutes');
 
 
 const app = express();
+
+
 // middleware
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true"); // Importante si usas cookies
-    next();
-  });
 app.use(cors({
-    origin: "http://localhost:5173", // Permitir peticiones desde tu frontend
-    credentials: true, // Habilitar cookies si las usas
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-    allowedHeaders: ["Content-Type", "Authorization"] // Headers permitidos
-  }));
-app.use(cors());
+  origin: "https://frontend-piscinas.onrender.com", // Cambia por la URL de tu frontend en Render
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true // Si usas cookies o autenticación basada en sesiones
+}));
+
 app.use(express.json());
 
 app.use('/api/usuarios', usuariosRoutes);
