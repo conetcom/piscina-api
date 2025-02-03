@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   [
     "https://frontend-piscinas.onrender.com",
-    "https://frontpicinas.onrender.com",
+    "https://frontpicinas.onrender.com"
   ], // Cambia por la URL de tu frontend en Render
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
