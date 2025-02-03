@@ -10,7 +10,7 @@ const app = express();
 // middleware
 app.use(cors({
   origin: "https://frontend-piscinas.onrender.com",
-  origin: "http://localhost:5173/", // Cambia por la URL de tu frontend en Render
+  origin: "https://frontpicinas.onrender.com", // Cambia por la URL de tu frontend en Render
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
   credentials: true // Si usas cookies o autenticación basada en sesiones
