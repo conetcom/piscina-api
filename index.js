@@ -12,7 +12,7 @@ app.use(cors({
   origin: "*", // Permite cualquier dominio
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: false // ⚠️ NO usar true con "*" por seguridad
+  credentials: true // ⚠️ NO usar true con "*" por seguridad
 }));
 
 app.use(express.json());
