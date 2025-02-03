@@ -14,7 +14,7 @@ exports.loginUsuario = async (req, res) => {
     const { email, password } = req.body;
     const user = await usuariosModel.getUsuarioByEmail(email);
 
-    if (!user || !(await bcrypt.compare(password, usuario.password))) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
     }
 
