@@ -12,12 +12,12 @@ exports.registrarUsuario = async (req, res) => {
 
 exports.loginUsuario = async (req, res) => {
     const { email, password } = req.body;
-    const usuario = await usuariosModel.getUsuarioByEmail(email);
+    const user = await usuariosModel.getUsuarioByEmail(email);
 
-    if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
+    if (!user || !(await bcrypt.compare(password, usuario.password))) {
         return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
     }
 
-    const token = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ user });
 };
