@@ -9,11 +9,7 @@ exports.registrarUsuario = async (req, res) => {
     await usuariosModel.createUsuario(id, nombre, email, hashedPassword);
     res.status(201).json({ mensaje: 'Usuario registrado' });
 };
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const User = require("../models/User"); // Asegúrate de importar tu modelo de usuario
-
-exports.login = async (req, res) => {
+exports.loginUsuario = async (req, res) => {
   const { email, password } = req.body;
 
   try {
