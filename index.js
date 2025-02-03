@@ -9,13 +9,10 @@ const app = express();
 
 // middleware
 app.use(cors({
-  origin:[
-    "https://frontend-piscinas.onrender.com",
-    "https://frontpicinas.onrender.com"
-  ],
+  origin: "*", // Permite cualquier dominio
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: true // Si usas cookies o autenticación basada en sesiones
+  credentials: false // ⚠️ NO usar true con "*" por seguridad
 }));
 
 app.use(express.json());
