@@ -21,6 +21,15 @@ exports.registrarUsuario = async (req, res) => {
 
         // Insertar el nuevo usuario
         const newUser = await usuariosModel.createUsuario(name, email, hashedPassword, userRol);
+        
+        // Verificar que el usuario se haya creado correctamente
+         if (!newUser || !newUser.id) {
+            throw new Error('Error al crear el usuario en la base de datos');
+        }
+
+        // Depuración: Inspeccionar el usuario creado
+        console.log('Usuario creado:', newUser);
+
 
         // Generar un token JWT (opcional, si necesitas autenticación inmediata)
         const token = jwt.sign(
