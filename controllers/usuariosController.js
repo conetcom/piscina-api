@@ -4,7 +4,7 @@ const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
     try {
-        const { nombre, email, password, rol } = req.body;
+        const { name, email, password, rol } = req.body;
         let userRol = rol || 'cliente'; // Asignar 'cliente' si no se proporciona un rol
 
         // Verificar si el correo electrónico ya está registrado
@@ -20,7 +20,7 @@ exports.registrarUsuario = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insertar el nuevo usuario
-        const newUser = await usuariosModel.createUsuario(nombre, email, hashedPassword, userRol);
+        const newUser = await usuariosModel.createUsuario(name, email, hashedPassword, userRol);
 
         // Generar un token JWT (opcional, si necesitas autenticación inmediata)
         const token = jwt.sign(
@@ -36,7 +36,7 @@ exports.registrarUsuario = async (req, res) => {
             data: {
                 user: {
                     id: newUser.id,
-                    name: newUser.nombre,
+                    name: newUser.name,
                     email: newUser.email,
                     rol: newUser.rol,
                 },
