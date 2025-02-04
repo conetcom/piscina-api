@@ -37,7 +37,7 @@ exports.registrarUsuario = async (req, res) => {
 
     } catch (error) {
         console.error('Error al registrar usuario:', error);
-        res.status(500).json({  success: true,
+        res.status(500).json({  success: false,
             message: "Registro Fallido",
             data: {
               user: {
