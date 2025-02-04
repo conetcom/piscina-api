@@ -5,7 +5,6 @@ const usuariosModel = require('../models/usuariosModel');
 exports.registrarUsuario = async (req, res) => {
     try {
         const { nombre, email, password, rol } = req.body;
-        
         if (!rol) {
             rol = 'cliente';
         }
@@ -38,7 +37,17 @@ exports.registrarUsuario = async (req, res) => {
 
     } catch (error) {
         console.error('Error al registrar usuario:', error);
-        res.status(500).json({ message: 'Error al registrar el usuario', error: error.message });
+        res.status(500).json({  success: true,
+            message: "Registro Fallido",
+            data: {
+              user: {
+                id: user.id,
+                name: user.nombre,
+                email: user.email,
+                //role: user.role,
+              },
+              token: token,
+            }, });
     }
 };
 
