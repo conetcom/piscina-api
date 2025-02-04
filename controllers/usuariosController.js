@@ -5,6 +5,10 @@ const usuariosModel = require('../models/usuariosModel');
 exports.registrarUsuario = async (req, res) => {
     try {
         const { nombre, email, password, rol } = req.body;
+        
+        if (!rol) {
+            rol = 'cliente';
+        }
 
         // Verificar si el correo electrónico ya está registrado
         const user = await usuariosModel.getUsuarioByEmail(email);
@@ -31,7 +35,7 @@ exports.registrarUsuario = async (req, res) => {
               token: token,
             },
           });
-          
+
     } catch (error) {
         console.error('Error al registrar usuario:', error);
         res.status(500).json({ message: 'Error al registrar el usuario', error: error.message });
