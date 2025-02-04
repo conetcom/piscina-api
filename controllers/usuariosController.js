@@ -21,6 +21,9 @@ exports.registrarUsuario = async (req, res) => {
 
         // Insertar el nuevo usuario
         const newUser = await usuariosModel.createUsuario(name, email, hashedPassword, userRol);
+
+        console.log(newUser);
+    
         
         // Verificar que el usuario se haya creado correctamente
          if (!newUser || !newUser.id) {

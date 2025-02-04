@@ -8,10 +8,9 @@ const getUsuarioByEmail = async (email) => {
 const createUsuario = async (name, email, hashedPassword, rol) => {
     const result = await pool.query(
         'INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, rol',
-        [Id, nombre, email, rol]
+        [id, nombre, email, rol]
     );
     
-    const newUser = result.rows[0];
 };
 
 module.exports = { getUsuarioByEmail, createUsuario };
