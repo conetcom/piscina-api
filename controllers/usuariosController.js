@@ -19,7 +19,7 @@ exports.registrarUsuario = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Crear el usuario en la base de datos
-        const newUser = await usuariosModel.createUsuario(username, email, hashedPassword, rol || 'cliente');
+        const newUser = await usuariosModel.createUsuario(username, email, hashedPassword, rol);
 
         // Verificar que el usuario se haya creado correctamente
         if (!newUser || !newUser.id) {
