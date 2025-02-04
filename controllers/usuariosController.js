@@ -3,12 +3,41 @@ const jwt = require('jsonwebtoken');
 const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
-    const { id, nombre, email, password } = req.body;
-    //console.log('req.body');
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await usuariosModel.createUsuario(id, nombre, email, hashedPassword);
-    res.status(201).json({ mensaje: 'Usuario registrado' });
+    try {
+        const { nombre, email, password, rol } = req.body;
+
+        // Verificar si el correo electrónico ya está registrado
+        const user = await usuariosModel.getUsuarioByEmail(email);
+        if (user) {
+            return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
+        }
+
+        // Hashear la contraseña
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insertar el nuevo usuario
+        const newUser = await usuariosModel.createUsuario(nombre, email, hashedPassword, rol);
+        
+        res.status(201).jsonres.json({
+            success: true,
+            message: "Login exitoso",
+            data: {
+              user: {
+                id: user.id,
+                name: user.nombre,
+                email: user.email,
+                //role: user.role,
+              },
+              token: token,
+            },
+          });
+          
+    } catch (error) {
+        console.error('Error al registrar usuario:', error);
+        res.status(500).json({ message: 'Error al registrar el usuario', error: error.message });
+    }
 };
+
 exports.loginUsuario = async (req, res) => {
   const { email, password } = req.body;
 
