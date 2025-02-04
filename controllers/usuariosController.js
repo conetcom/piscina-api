@@ -4,7 +4,7 @@ const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
     try {
-        const { name, email, password, rol } = req.body;
+        const { username, email, password, rol } = req.body;
         let userRol = rol || 'cliente'; // Asignar 'cliente' si no se proporciona un rol
 
         // Verificar si el correo electrónico ya está registrado
@@ -20,9 +20,9 @@ exports.registrarUsuario = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insertar el nuevo usuario
-        const newUser = await usuariosModel.createUsuario(name, email, hashedPassword, userRol);
+        const newUser = await usuariosModel.createUsuario(username, email, hashedPassword, userRol);
 
-        console.log(newUser);
+        
     
         
         // Verificar que el usuario se haya creado correctamente

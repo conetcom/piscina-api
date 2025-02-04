@@ -5,10 +5,10 @@ const getUsuarioByEmail = async (email) => {
     return result.rows[0];
 };
 
-exports.createUsuario = async (name, email, password, rol) => {
+exports.createUsuario = async (username, email, password, rol) => {
     const result = await pool.query(
-        'INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre AS name, email, rol',
-        [name, email, password, rol]
+        'INSERT INTO usuarios (username, email, password_hash, rol) VALUES ($1, $2, $3, $4) RETURNING id, username, email, rol',
+        [username, email, password, rol]
     );
     return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
