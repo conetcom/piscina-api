@@ -5,9 +5,14 @@ const getUsuarioByEmail = async (email) => {
     return result.rows[0];
 };
 
-const createUsuario = async (id,nombre, email, hashedPassword) => {
-    await pool.query('INSERT INTO cliente (id, nombre, email, password) VALUES ($1, $2, $3, $4)', [id, nombre, email, hashedPassword]);
-    
+const createUsuario = async (uesername, email, hashedPassword, rol) => {
+    const result = await pool.query(
+        'INSERT INTO cliente (username, email, password, rol) VALUES ($1, $2, $3, $4) RETURNING id, username, email, rol',
+        [nombre, email, hashedPassword, rol]
+    );
+
+    return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
+
 
 module.exports = { getUsuarioByEmail, createUsuario };
