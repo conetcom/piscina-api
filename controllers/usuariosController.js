@@ -131,9 +131,9 @@ exports.loginUsuario = async (req, res) => {
       data: {
         user: {
           id: user.id,
-          name: user.nombre,
+          name: user.name,
           email: user.email,
-          //role: user.role,
+          rol: user.rol,
         },
         token: token,
       },
