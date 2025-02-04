@@ -30,7 +30,7 @@ exports.registrarUsuario = async (req, res) => {
         );
 
         // Respuesta exitosa
-        res.status(201).json({
+        res.json({
             success: true,
             message: "Usuario registrado exitosamente",
             data: {
