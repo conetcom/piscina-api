@@ -11,8 +11,8 @@ exports.obtenerStPiscinasById = async (req, res) => {
 };
 
 exports.crearStPiscinas = async (req, res) => {
-    const { id_piscina, id_cliente, ph, orp, st_bomba,st_light } = req.body;
-    await productosModel.createProducto(id_piscina, id_cliente,ph, orp, st_bomba, st_light);
+    const { piscina_id, ph, orp, st_bombas, st_light } = req.body;
+    await productosModel.createProducto(piscina_id, ph, orp, st_bombas, st_light);
     res.status(201).send('registro lectura almacenado');
 };
 
