@@ -7,7 +7,7 @@ const getstPiscinas = async () => {
 };
 
 const getstPiscinasById = async (id) => {
-    const result = await pool.query('SELECT * FROM estado_piscinas WHERE id = $1', [id_piscina]);
+    const result = await pool.query('SELECT * FROM estado_piscinas WHERE id = $1', [piscina_id]);
     return result.rows[0];
 };
 

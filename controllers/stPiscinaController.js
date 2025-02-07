@@ -1,28 +1,28 @@
-const productosModel = require('../models/stPiscinasModel');
+const stPiscinaModel = require('../models/stPiscinasModel');
 
 exports.obtenerStPiscinas = async (req, res) => {
-    const productos = await productosModel.getProductos();
-    res.json(productos);
+    const datos = await stPiscinaModel.getstPiscinas();
+    res.json(datos);
 };
 
-exports.obtenerStPiscinasById = async (req, res) => {
-    const producto = await productosModel.getProductoById(req.params.id);
-    res.json(producto);
+exports.getstPiscinasById = async (req, res) => {
+    const datos = await stPiscinaModel.getstPiscinasById(req.params.id);
+    res.json(datos);
 };
 
-exports.crearStPiscinas = async (req, res) => {
+exports.createstPiscinas = async (req, res) => {
     const { piscina_id, ph, orp, st_bombas, st_light } = req.body;
-    await productosModel.createProducto(piscina_id, ph, orp, st_bombas, st_light);
+    await stPiscinaModel.createstPiscinas(piscina_id, ph, orp, st_bombas, st_light);
     res.status(201).send('registro lectura almacenado');
 };
 
-exports.actualizarStPiscinas = async (req, res) => {
+exports.updatestPiscinas  = async (req, res) => {
     const { id_piscina, id_cliente, ph, orp, st_bomba,st_light } = req.body;
-    await productosModel.updateProducto(req.params.id, id_piscina, id_cliente, ph, orp, st_bomba, st_light);
-    res.send('Producto actualizado');
+    await stPiscinaModel.updatestPiscinas(req.params.id, id_piscina, id_cliente, ph, orp, st_bomba, st_light);
+    res.send('registro actualizado');
 };
 
-exports.eliminarStPiscinas = async (req, res) => {
-    await productosModel.deleteProducto(req.params.id);
-    res.send('Producto eliminado');
+exports.deletestPiscinas = async (req, res) => {
+    await stPiscinaModel.deletestPiscinas(req.params.id);
+    res.send('Registro  eliminado');
 };
