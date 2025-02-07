@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const productosRoutes = require('./routes/productosRoutes');
+const estadoPiscinas = require('./routes/st_piscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 
 
@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/usuarios', usuariosRoutes);
-app.use('/api/productos', productosRoutes);
+app.use('/api/st_piscinas', estadoPiscinas);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
