@@ -1,7 +1,8 @@
 const pool = require('./database');
 
 const getstPiscinas = async () => {
-    const result = await pool.query('SELECT * FROM estado_piscinas');
+  
+    const result = await pool.query('SELECT * FROM estado_piscinas ORDER BY fecha_registro DESC LIMIT 1');
     return result.rows;
 };
 
