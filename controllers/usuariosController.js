@@ -102,23 +102,23 @@ exports.loginUsuario = async (req, res) => {
 };
 exports.usuarioUpdate = async (req, res) => {
   try {
-      const { username,lastName, email, password, rol } = req.body;
+      const { username,lastName, email, password } = req.body;
 
       
       // Hashear la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
-      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword, rol);
+      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword);
 
       // Verificar que el usuario se haya creado correctamente
-      if (!newUser || !newUser.id) {
+      if (!updateUser || !updateUser.id) {
           throw new Error('Error al crear el usuario en la base de datos');
       }
 
       // Generar el token JWT
       const token = jwt.sign(
-          { id: newUser.id, email: newUser.email},
+          { id: updateUser.id, email: updateUser.email},
           process.env.JWT_SECRET, // Clave secreta desde variables de entorno
           { expiresIn: '1h' } // Expiración del token
       );
@@ -126,24 +126,24 @@ exports.usuarioUpdate = async (req, res) => {
       // Respuesta exitosa con el usuario registrado y el token
       res.status(201).json({
           success: true,
-          message: 'Usuario registrado exitosamente',
+          message: 'Usuario actualizado exitosamente',
           data: {
               user: {
-                  id: newUser.id,
-                  name: newUser.username,
-                  lastName: newUser.lastName,
-                  email: newUser.email,
-                  rol: newUser.rol,
+                  id: updateUser.id,
+                  name: updateUser.username,
+                  lastName: updateUser.lastName,
+                  email: updateUser.email,
+                  rol: updateUser.rol,
               },
               token: token,
           },
       });
 
   } catch (error) {
-      console.error('Error al registrar usuario:', error);
+      console.error('Error al actualizar usuario:', error);
       res.status(500).json({
           success: false,
-          message: 'Error al registrar el usuario',
+          message: 'Error al actualizar el usuario',
           error: error.message,
       });
   }
