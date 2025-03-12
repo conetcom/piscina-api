@@ -4,7 +4,7 @@ const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
     try {
-        const { username, email, password, rol } = req.body;
+        const { username, lastName, email, password, rol } = req.body;
 
         // Verificar si el usuario ya existe
         const usuarioExistente = await usuariosModel.getUsuarioByEmail(email);
@@ -19,7 +19,7 @@ exports.registrarUsuario = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Crear el usuario en la base de datos
-        const newUser = await usuariosModel.createUsuario(username, email, hashedPassword, rol);
+        const newUser = await usuariosModel.createUsuario(username, lastName, email, hashedPassword, rol);
 
         // Verificar que el usuario se haya creado correctamente
         if (!newUser || !newUser.id) {
@@ -41,6 +41,7 @@ exports.registrarUsuario = async (req, res) => {
                 user: {
                     id: newUser.id,
                     name: newUser.username,
+                    lastName: newUser.lastName,
                     email: newUser.email,
                     rol: newUser.rol,
                 },
@@ -100,14 +101,14 @@ exports.loginUsuario = async (req, res) => {
 };
 exports.usuarioUpdate = async (req, res) => {
   try {
-      const { username, email, password, rol } = req.body;
+      const { username,lastName, email, password, rol } = req.body;
 
       
       // Hashear la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
-      const updateUser = await usuariosModel.updateUser(username, email, hashedPassword, rol);
+      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword, rol);
 
       // Verificar que el usuario se haya creado correctamente
       if (!newUser || !newUser.id) {
@@ -129,6 +130,7 @@ exports.usuarioUpdate = async (req, res) => {
               user: {
                   id: newUser.id,
                   name: newUser.username,
+                  lastName: newUser.lastName,
                   email: newUser.email,
                   rol: newUser.rol,
               },
