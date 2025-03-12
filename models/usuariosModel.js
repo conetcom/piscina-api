@@ -15,15 +15,15 @@ const createUsuario = async (username, lastname, email, hashedPassword, rol) => 
 };
 // ACTUALIZAR USUARIOS
 const updateUser = async (
-     firstName, lastname, bio, email) => {
+     username, lastname, bio, email) => {
   try {
     const query = `
-      UPDATE users
+      UPDATE usuarios
       SET username = $1, lastname = $2, bio = $3, email = $4
       WHERE id = $5;
     `;
     
-    const values = [usernameame, lastname, bio, email, userId];
+    const values = [username, lastname, bio, email, userId];
 
     const result = await pool.query(query, values);
     
