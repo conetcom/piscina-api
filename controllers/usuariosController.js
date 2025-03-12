@@ -28,7 +28,7 @@ exports.registrarUsuario = async (req, res) => {
 
         // Generar el token JWT
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email},
+            { id: newUser.user_id, email: newUser.email},
             process.env.JWT_SECRET, // Clave secreta desde variables de entorno
             { expiresIn: '1h' } // Expiración del token
         );
@@ -39,7 +39,7 @@ exports.registrarUsuario = async (req, res) => {
             message: 'Usuario registrado exitosamente',
             data: {
                 user: {
-                    id: newUser.id,
+                    id: newUser.user_id,
                     name: newUser.username,
                     lastName: newUser.lastName,
                     email: newUser.email,
@@ -77,7 +77,7 @@ exports.loginUsuario = async (req, res) => {
     }
 
     // Generar JWT
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.usurio_id, email: user.email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -86,7 +86,7 @@ exports.loginUsuario = async (req, res) => {
       message: "Login exitoso",
       data: {
         user: {
-          id: user.id,
+          id: user.usurio_id,
           name: user.username,
           lastName: user.lastName,
           email: user.email,
@@ -118,7 +118,7 @@ exports.usuarioUpdate = async (req, res) => {
 
       // Generar el token JWT
       const token = jwt.sign(
-          { id: updateUser.id, email: updateUser.email},
+          { id: updateUser.user_id, email: updateUser.email},
           process.env.JWT_SECRET, // Clave secreta desde variables de entorno
           { expiresIn: '1h' } // Expiración del token
       );
@@ -129,7 +129,7 @@ exports.usuarioUpdate = async (req, res) => {
           message: 'Usuario actualizado exitosamente',
           data: {
               user: {
-                  id: updateUser.id,
+                  id: updateUser.user_id,
                   name: updateUser.username,
                   lastName: updateUser.lastName,
                   email: updateUser.email,
