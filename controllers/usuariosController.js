@@ -4,7 +4,7 @@ const usuariosModel = require('../models/usuariosModel');
 
 exports.registrarUsuario = async (req, res) => {
     try {
-        const { username, lastName, email, password, rol } = req.body;
+        const { username, lastname, email, password, rol } = req.body;
 
         // Verificar si el usuario ya existe
         const usuarioExistente = await usuariosModel.getUsuarioByEmail(email);
@@ -19,7 +19,7 @@ exports.registrarUsuario = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Crear el usuario en la base de datos
-        const newUser = await usuariosModel.createUsuario(username, lastName, email, hashedPassword, rol);
+        const newUser = await usuariosModel.createUsuario(username, lastname, email, hashedPassword, rol);
 
         // Verificar que el usuario se haya creado correctamente
         if (!newUser || !newUser.id) {
