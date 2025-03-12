@@ -5,25 +5,25 @@ const getUsuarioByEmail = async (email) => {
     return result.rows[0];
 };
 
-const createUsuario = async (username, lastName, email, hashedPassword, rol) => {
+const createUsuario = async (username, lastname, email, hashedPassword, rol) => {
     const result = await pool.query(
-        'INSERT INTO usuarios (username, lastName, email, password, rol) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, lastName, email, rol',
-        [username, lastName, email, hashedPassword, rol]
+        'INSERT INTO usuarios (username, lastname, email, password, rol) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, lastName, email, rol',
+        [username, lastname, email, hashedPassword, rol]
     );
 
     return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
 // ACTUALIZAR USUARIOS
 const updateUser = async (
-     firstName, lastName, bio, email) => {
+     firstName, lastname, bio, email) => {
   try {
     const query = `
       UPDATE users
-      SET first_name = $1, last_name = $2, bio = $3, email = $4
+      SET username = $1, lastname = $2, bio = $3, email = $4
       WHERE id = $5;
     `;
     
-    const values = [firstName, lastName, bio, email, userId];
+    const values = [usernameame, lastname, bio, email, userId];
 
     const result = await pool.query(query, values);
     
