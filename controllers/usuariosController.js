@@ -41,7 +41,7 @@ exports.registrarUsuario = async (req, res) => {
                 user: {
                     id: newUser.user_id,
                     name: newUser.username,
-                    lastName: newUser.lastName,
+                    lastname: newUser.lastname,
                     email: newUser.email,
                     rol: newUser.rol,
                 },
