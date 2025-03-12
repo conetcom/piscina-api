@@ -22,7 +22,7 @@ exports.registrarUsuario = async (req, res) => {
         const newUser = await usuariosModel.createUsuario(username, lastname, email, hashedPassword, rol);
 
         // Verificar que el usuario se haya creado correctamente
-        if (!newUser || !newUser.id) {
+        if (!newUser || !newUser.user_id) {
             throw new Error('Error al crear el usuario en la base de datos');
         }
 
