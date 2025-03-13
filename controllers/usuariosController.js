@@ -100,7 +100,7 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 };
-exports.update = async (req, res) => {
+exports.usuarioUpdate = async (req, res) => {
   try {
       const { username,lastName, email, password } = req.body;
 
