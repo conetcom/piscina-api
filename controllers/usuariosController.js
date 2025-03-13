@@ -102,14 +102,14 @@ exports.loginUsuario = async (req, res) => {
 };
 exports.usuarioUpdate = async (req, res) => {
   try {
-      const { username,lastName, email, password } = req.body;
+      const { username,lastName, email, password, userbio} = req.body;
 
       
       // Hashear la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
-      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword);
+      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword, userbio);
 
       // Verificar que el usuario se haya creado correctamente
       if (!updateUser || !updateUser.id) {
@@ -131,7 +131,7 @@ exports.usuarioUpdate = async (req, res) => {
               user: {
                   id: updateUser.user_id,
                   name: updateUser.username,
-                  lastName: updateUser.lastName,
+                  lastName: updateUser.lastname,
                   email: updateUser.email,
                   rol: updateUser.rol,
               },
@@ -140,7 +140,7 @@ exports.usuarioUpdate = async (req, res) => {
       });
 
   } catch (error) {
-      console.error('Error al actualizar usuario:', error);
+      //console.error('Error al actualizar usuario:', error);
       res.status(500).json({
           success: false,
           message: 'Error al actualizar el usuario',
