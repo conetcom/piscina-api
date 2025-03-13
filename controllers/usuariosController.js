@@ -112,8 +112,8 @@ exports.usuarioUpdate = async (req, res) => {
       const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword, userbio);
 
       // Verificar que el usuario se haya creado correctamente
-      if (!updateUser || !updateUser.id) {
-          throw new Error('Error al crear el usuario en la base de datos');
+      if (!updateUser || !updateUser.user_id) {
+          throw new Error('Error al actualizar el usuario en la base de datos');
       }
 
       // Generar el token JWT
