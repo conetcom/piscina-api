@@ -101,7 +101,7 @@ exports.loginUsuario = async (req, res) => {
   }
 };
 exports.usuarioUpdate = async (req, res) => {
-  const { username, lastname, email, password, userbio } = req.body;
+  const { username, lastname, email, userbio } = req.body;
   try {
     // Buscar usuario en la base de datos
     const users = await usuariosModel.getUsuarioByEmail(email);
