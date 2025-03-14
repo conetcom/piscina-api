@@ -19,19 +19,26 @@ const updateUser = async (username, lastname, userbio, email, user_id) => {
     const query = `
       UPDATE usuarios
       SET username = $1, lastname = $2, userbio = $3, email = $4
-      WHERE user_id = $5;
+      WHERE user_id = $5
+      RETURNING *;  // Devuelve el usuario actualizado
     `;
     
     const values = [username, lastname, userbio, email, user_id];
 
     const result = await pool.query(query, values);
+
+    if (result.rowCount === 0) {
+      throw new Error('Usuario no encontrado o no actualizado');
+    }
     
     console.log('User updated successfully');
-    return result.rows[0]
+    return result.rows[0];  // Retorna el usuario actualizado
   } catch (err) {
     console.error('Error updating user:', err);
+    throw err;  // Re-lanza el error para que el llamador lo maneje
   }
 };
+
 
 // Ejemplo de uso:
 //updateUser(1, 'Jane', 'Smith', 'Software engineer with a passion for design.', 'jane.smith@example.com');
