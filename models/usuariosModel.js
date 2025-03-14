@@ -20,7 +20,7 @@ const updateUser = async (username, lastname, userbio, email, user_id) => {
       UPDATE usuarios
       SET username = $1, lastname = $2, userbio = $3, email = $4
       WHERE user_id = $5
-      RETURNING *;  // Devuelve el usuario actualizado
+      RETURNING *; 
     `;
     
     const values = [username, lastname, userbio, email, user_id];
