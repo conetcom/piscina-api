@@ -24,10 +24,10 @@ const updateUser = async (username, lastname, userbio, email, user_id) => {
     `;
     
     const values = [username, lastname, userbio, email, user_id];
-   
+    console.log(values);
 
     const result = await pool.query(query, values);
-    console.log(result)
+    
     if (result.rowCount === 0) {
       throw new Error('Usuario no encontrado o no actualizado');
     }
