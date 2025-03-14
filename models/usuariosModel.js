@@ -24,6 +24,7 @@ const updateUser = async (username, lastname, userbio, email, user_id) => {
     `;
     
     const values = [username, lastname, userbio, email, user_id];
+    console.log(userbio)
 
     const result = await pool.query(query, values);
 
