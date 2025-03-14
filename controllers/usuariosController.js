@@ -101,54 +101,60 @@ exports.loginUsuario = async (req, res) => {
   }
 };
 exports.usuarioUpdate = async (req, res) => {
-  const { username,lastname, email, password, userbio} = req.body;
+  const { username, lastname, email, password, userbio } = req.body;
   try {
     // Buscar usuario en la base de datos
-    const users= await usuariosModel.getUsuarioByEmail(email);
-    if (user_id) {
-      user_id = users.user_id
-      // Hashear la contraseña
-      const hashedPassword = await bcrypt.hash(password, 10);
+    const users = await usuariosModel.getUsuarioByEmail(email);
+    
+    // Verificar si el usuario existe
+    if (!users) {
+      return res.status(401).json({ success: false, message: "Error: Usuario no encontrado" });
+    }
+    
+    const user_id = users.user_id; // Extraer el user_id del usuario encontrado
+    
+    // Hashear la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Crear el usuario en la base de datos
-      const updateUser = await usuariosModel.updateUser(username, lastname, email, hashedPassword, userbio, user_id);
+    // Actualizar el usuario en la base de datos
+    const updateUser = await usuariosModel.updateUser(username, lastname, email, hashedPassword, userbio, user_id);
 
-      // Verificar que el usuario se haya creado correctamente
-      if (!updateUser || !updateUser.user_id) {
-          throw new Error('Error al actualizar el usuario en la base de datos');
-      }
+    // Verificar que el usuario se haya actualizado correctamente
+    if (!updateUser || !updateUser.user_id) {
+      throw new Error('Error al actualizar el usuario en la base de datos');
+    }
 
-      // Generar el token JWT
-      const token = jwt.sign(
-          { id: updateUser.user_id, email: updateUser.email},
-          process.env.JWT_SECRET, // Clave secreta desde variables de entorno
-          { expiresIn: '1h' } // Expiración del token
-      );
+    // Generar el token JWT
+    const token = jwt.sign(
+      { id: updateUser.user_id, email: updateUser.email },
+      process.env.JWT_SECRET, // Clave secreta desde variables de entorno
+      { expiresIn: '1h' } // Expiración del token
+    );
 
-      // Respuesta exitosa con el usuario registrado y el token
-      res.status(201).json({
-          success: true,
-          message: 'Usuario actualizado exitosamente',
-          data: {
-              user: {
-                  id: updateUser.user_id,
-                  name: updateUser.username,
-                  lastname: updateUser.lastname,
-                  email: updateUser.email,
-                  rol: updateUser.rol,
-              },
-              token: token,
-          },
-      });
+    // Respuesta exitosa con el usuario actualizado y el token
+    res.status(201).json({
+      success: true,
+      message: 'Usuario actualizado exitosamente',
+      data: {
+        user: {
+          id: updateUser.user_id,
+          name: updateUser.username,
+          lastname: updateUser.lastname,
+          email: updateUser.email,
+          rol: updateUser.rol,
+        },
+        token: token,
+      },
+    });
 
-  } 
-}catch (error) {
-      //console.error('Error al actualizar usuario:', error);
-      res.status(500).json({
-          success: false,
-          message: 'Error al actualizar el usuario',
-          error: error.message,
-      });
+  } catch (error) {
+    // Manejo de errores
+    res.status(500).json({
+      success: false,
+      message: 'Error al actualizar el usuario',
+      error: error.message,
+    });
   }
 };
+
 
