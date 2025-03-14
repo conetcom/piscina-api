@@ -88,7 +88,7 @@ exports.loginUsuario = async (req, res) => {
         user: {
           id: user.usurio_id,
           name: user.username,
-          lastName: user.lastName,
+          lastname: user.lastname,
           email: user.email,
           rol: user.rol,
         },
@@ -101,11 +101,12 @@ exports.loginUsuario = async (req, res) => {
   }
 };
 exports.usuarioUpdate = async (req, res) => {
-  const { username,lastName, email, password, userbio} = req.body;
+  const { username,lastname, email, password, userbio} = req.body;
   try {
     // Buscar usuario en la base de datos
-    const user_id = await usuariosModel.getUsuarioByuser_id(email);
+    const user_id = await usuariosModel.getUsuarioByEmail(email);
     if (!user_id) {
+
       return res.status(401).json({ success: false, message: "error usuario" });
     } 
 
@@ -115,7 +116,7 @@ exports.usuarioUpdate = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
-      const updateUser = await usuariosModel.updateUser(username, lastName, email, hashedPassword, userbio, user_id);
+      const updateUser = await usuariosModel.updateUser(username, lastname, email, hashedPassword, userbio, user_id);
 
       // Verificar que el usuario se haya creado correctamente
       if (!updateUser || !updateUser.user_id) {
@@ -137,7 +138,7 @@ exports.usuarioUpdate = async (req, res) => {
               user: {
                   id: updateUser.user_id,
                   name: updateUser.username,
-                  lastName: updateUser.lastname,
+                  lastname: updateUser.lastname,
                   email: updateUser.email,
                   rol: updateUser.rol,
               },

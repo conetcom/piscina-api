@@ -4,10 +4,7 @@ const getUsuarioByEmail = async (email) => {
     const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     return result.rows[0];
 };
-const getUsuarioByuser_id = async (email) => {
-  const result = await pool.query('SELECT user_id FROM usuarios WHERE email = $1', [email]);
-  return result.rows[0];
-};
+
 const createUsuario = async (username, lastname, email, hashedPassword, rol) => {
     const result = await pool.query(
         'INSERT INTO usuarios (username, lastname, email, password, rol) VALUES ($1, $2, $3, $4, $5) RETURNING user_id, username, lastname, email, rol',
@@ -17,7 +14,7 @@ const createUsuario = async (username, lastname, email, hashedPassword, rol) => 
     return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
 // ACTUALIZAR USUARIOS
-const updateUser = async (username, lastname, userbio, email) => {
+const updateUser = async (username, lastname, userbio, email, user_id) => {
   try {
     const query = `
       UPDATE usuarios
@@ -41,4 +38,4 @@ const updateUser = async (username, lastname, userbio, email) => {
 
 
 
-module.exports = { getUsuarioByEmail, createUsuario,updateUser, getUsuarioByuser_id};
+module.exports = { getUsuarioByEmail, createUsuario,updateUser};
