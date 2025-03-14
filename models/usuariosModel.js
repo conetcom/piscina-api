@@ -4,8 +4,8 @@ const getUsuarioByEmail = async (email) => {
     const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     return result.rows[0];
 };
-const getUsuarioByuser_id = async (user_id) => {
-  const result = await pool.query('SELECT * FROM usuarios WHERE user_id = $1', [user_id]);
+const getUsuarioByuser_id = async (email) => {
+  const result = await pool.query('SELECT user_id FROM usuarios WHERE email = $1', [email]);
   return result.rows[0];
 };
 const createUsuario = async (username, lastname, email, hashedPassword, rol) => {
