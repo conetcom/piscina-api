@@ -104,14 +104,9 @@ exports.usuarioUpdate = async (req, res) => {
   const { username,lastname, email, password, userbio} = req.body;
   try {
     // Buscar usuario en la base de datos
-    const user_id = await usuariosModel.getUsuarioByEmail(email);
+    const users= await usuariosModel.getUsuarioByEmail(email);
     if (user_id) {
-
-      return res.status(401).json({ success: false, message: "error usuario" });
-    } 
-
-
-      
+      user_id = users.user_id
       // Hashear la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
 
