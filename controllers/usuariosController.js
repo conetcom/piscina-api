@@ -114,10 +114,10 @@ exports.usuarioUpdate = async (req, res) => {
     const user_id = users.user_id; // Extraer el user_id del usuario encontrado
     
     // Hashear la contraseña
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     // Actualizar el usuario en la base de datos
-    const updateUser = await usuariosModel.updateUser(username, lastname, email, hashedPassword, userbio, user_id);
+    const updateUser = await usuariosModel.updateUser(username, lastname, userbio, user_id);
 
     // Verificar que el usuario se haya actualizado correctamente
     if (!updateUser || !updateUser.user_id) {
