@@ -113,6 +113,7 @@ exports.usuarioUpdate = async (req, res) => {
     }
     
     const user_id = users.user_id; // Extraer el user_id del usuario encontrado
+    console.log (user_id);
     
     // Hashear la contraseña
     //const hashedPassword = await bcrypt.hash(password, 10);
