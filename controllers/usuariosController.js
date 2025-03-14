@@ -119,7 +119,7 @@ exports.usuarioUpdate = async (req, res) => {
 
     // Actualizar el usuario en la base de datos
     const updateUser = await usuariosModel.updateUser(username, lastname, userbio, user_id);
-
+    console.log(updateUser);
     // Verificar que el usuario se haya actualizado correctamente
     if (!updateUser || !updateUser.user_id) {
       throw new Error('Error al actualizar el usuario en la base de datos');
