@@ -105,6 +105,7 @@ exports.usuarioUpdate = async (req, res) => {
   try {
     // Buscar usuario en la base de datos
     const users = await usuariosModel.getUsuarioByEmail(email);
+    console.log(users);
     
     // Verificar si el usuario existe
     if (!users) {
