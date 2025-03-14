@@ -14,16 +14,17 @@ const createUsuario = async (username, lastname, email, hashedPassword, rol) => 
     return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
 // ACTUALIZAR USUARIOS
-const updateUser = async (username, lastname, userbio, email,  user_id) => {
+const updateUser = async (username, lastname, userbio, user_id) => {
   try {
     const query = `
       UPDATE usuarios
-      SET username = $1, lastname = $2, userbio = $3, email = $4
-      WHERE user_id = $5
+      SET username = $1, lastname = $2, userbio = $3
+      WHERE user_id = $4
       RETURNING *; 
+
     `;
     
-    const values = [username, lastname, userbio, email, user_id];
+    const values = [username, lastname, userbio, user_id];
     console.log(values);
 
     const result = await pool.query(query, values);

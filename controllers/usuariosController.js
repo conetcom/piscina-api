@@ -120,8 +120,9 @@ exports.usuarioUpdate = async (req, res) => {
     //const hashedPassword = await bcrypt.hash(password, 10);
 
     // Actualizar el usuario en la base de datos
-    const updateUser = await usuariosModel.updateUser(username, lastname, userbio, email, user_id);
+    const updateUser = await usuariosModel.updateUser(username, lastname, userbio, user_id);
     console.log(updateUser);
+
     // Verificar que el usuario se haya actualizado correctamente
     if (!updateUser || !updateUser.user_id) {
       throw new Error('Error al actualizar el usuario en la base de datos');
@@ -144,6 +145,7 @@ exports.usuarioUpdate = async (req, res) => {
           name: updateUser.username,
           lastname: updateUser.lastname,
           email: updateUser.email,
+          userbio: updateUser.userbio,
           rol: updateUser.rol,
         },
         token: token,
