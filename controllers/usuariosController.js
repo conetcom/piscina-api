@@ -141,7 +141,8 @@ exports.usuarioUpdate = async (req, res) => {
           },
       });
 
-  } catch (error) {
+  } 
+}catch (error) {
       //console.error('Error al actualizar usuario:', error);
       res.status(500).json({
           success: false,
