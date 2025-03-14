@@ -102,6 +102,7 @@ exports.loginUsuario = async (req, res) => {
 };
 exports.usuarioUpdate = async (req, res) => {
   const { username, lastname, email, userbio } = req.body;
+  console.log(userbio);
   try {
     // Buscar usuario en la base de datos
     const users = await usuariosModel.getUsuarioByEmail(email);
@@ -114,7 +115,7 @@ exports.usuarioUpdate = async (req, res) => {
     
     const user_id = users.user_id; // Extraer el user_id del usuario encontrado
     console.log (user_id);
-    
+
     // Hashear la contraseña
     //const hashedPassword = await bcrypt.hash(password, 10);
 
