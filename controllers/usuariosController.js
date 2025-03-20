@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const usuariosModel = require('../models/usuariosModel');
 
-exports.registrarUsuario = async (req, res) => {
+registrarUsuario = async (req, res) => {
     try {
         const { username, lastname, email, password, rol } = req.body;
 
@@ -38,13 +38,15 @@ exports.registrarUsuario = async (req, res) => {
             success: true,
             message: 'Usuario registrado exitosamente',
             data: {
-                user: {
-                    id: newUser.user_id,
-                    name: newUser.username,
-                    lastname: newUser.lastname,
-                    email: newUser.email,
-                    rol: newUser.rol,
-                },
+              user: {
+                id: newUser.user_id,
+                name: newUser.username,
+                lastname: newUser.lastname,
+                email: newUser.email,
+                rol: newUser.rol,
+                userbio: newUser.userbio,
+                profileImage: newUser.foto_perfil_url,
+            },
                 token: token,
             },
         });
@@ -59,7 +61,7 @@ exports.registrarUsuario = async (req, res) => {
     }
 };
 
-exports.loginUsuario = async (req, res) => {
+loginUsuario = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -86,12 +88,14 @@ exports.loginUsuario = async (req, res) => {
       message: "Login exitoso",
       data: {
         user: {
-          id: user.usurio_id,
+          id: user.user_id,
           name: user.username,
           lastname: user.lastname,
           email: user.email,
           rol: user.rol,
-        },
+          userbio: user.userbio,
+          profileImage: user.foto_perfil_url,
+      },
         token: token,
       },
     });
@@ -100,7 +104,7 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 };
-exports.usuarioUpdate = async (req, res) => {
+usuarioUpdate = async (req, res) => {
   const { username, lastname, email, userbio } = req.body;
 
   try {
@@ -162,4 +166,4 @@ exports.usuarioUpdate = async (req, res) => {
   }
 };
 
-
+module.exports = {loginUsuario,usuarioUpdate, registrarUsuario}

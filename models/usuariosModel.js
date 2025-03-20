@@ -25,8 +25,7 @@ const updateUser = async (username, lastname, userbio, user_id) => {
     `;
     
     const values = [username, lastname, userbio, user_id];
-    console.log(values);
-
+  
     const result = await pool.query(query, values);
     
     if (result.rowCount === 0) {
@@ -41,10 +40,22 @@ const updateUser = async (username, lastname, userbio, user_id) => {
   }
 };
 
-
-// Ejemplo de uso:
-//updateUser(1, 'Jane', 'Smith', 'Software engineer with a passion for design.', 'jane.smith@example.com');
+// models/usuariosModel.js
 
 
+const updatefoto = async (fotoPerfilUrl, user_id) => {
+  try {
+    const query = `UPDATE usuarios SET foto_perfil_url = $1 WHERE user_id = $2 RETURNING *`;
+    const values = [fotoPerfilUrl, user_id];
+    console.log(values);
 
-module.exports = { getUsuarioByEmail, createUsuario,updateUser};
+    const result = await pool.query(query, values);
+    return result.rows[0]; // Retorna el usuario actualizado
+  } catch (err) {
+    console.log(data)
+    console.error('Error al actualizar la foto de perfil:', err);
+    throw err;
+  }
+};
+
+module.exports = { getUsuarioByEmail, createUsuario,updateUser, updatefoto};

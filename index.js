@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const estadoPiscinas = require('./routes/st_piscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
+const userRoutes = require('./routes/userroutes');
+
 
 
 const app = express();
@@ -16,10 +18,14 @@ app.use(cors({
 }));
 
 app.use(express.json());
+;app.use('/uploads', express.static('uploads')) // Servir archivos estáticos (fotos de perfil)
 
+// Usar las rutas de usuario
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
+app.use('/api/user', userRoutes);
 
-const PORT = process.env.PORT ||5000;
+
+const PORT = process.env.PORT ||5001;
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
 
