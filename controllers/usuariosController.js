@@ -87,7 +87,7 @@ loginUsuario = async (req, res) => {
       success: true,
       message: "Login exitoso",
       data: {
-        user: {
+        
           id: user.user_id,
           name: user.username,
           lastname: user.lastname,
@@ -95,7 +95,7 @@ loginUsuario = async (req, res) => {
           rol: user.rol,
           userbio: user.userbio,
           profileImage: user.foto_perfil_url,
-      },
+      
         token: token,
       },
     });

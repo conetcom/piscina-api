@@ -1,8 +1,9 @@
-const express = require('express');
+const express =require('express');
 const cors = require('cors');
 const estadoPiscinas = require('./routes/st_piscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userroutes');
+const path = require('path');
 
 
 
@@ -18,7 +19,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
-;app.use('/uploads', express.static('uploads')) // Servir archivos estáticos (fotos de perfil)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Definir carpeta pública donde estarán las imágenes
+
 
 // Usar las rutas de usuario
 app.use('/api/usuarios', usuariosRoutes);

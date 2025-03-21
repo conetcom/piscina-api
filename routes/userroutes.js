@@ -25,7 +25,9 @@ const upload = multer({ storage: storage });
 router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req, res) => {
   const { user_id } = req.body; // Recibe el user_id en la solicitud
   
-  const fotoPerfilUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  const photoPerfilUrl = req.file ? `/uploads/${req.file.filename}` : null;
+  const baseUrl = 'https://piscina-api.onrender.com';
+  const  fotoPerfilUrl= `${baseUrl}${photoPerfilUrl}`;
 
   if (!user_id || !fotoPerfilUrl) {
     return res.status(400).json({ success: false, message: 'Faltan datos' });
