@@ -38,15 +38,14 @@ registrarUsuario = async (req, res) => {
             success: true,
             message: 'Usuario registrado exitosamente',
             data: {
-              user: {
+              
                 id: newUser.user_id,
                 name: newUser.username,
                 lastname: newUser.lastname,
                 email: newUser.email,
                 rol: newUser.rol,
                 userbio: newUser.userbio,
-                profileImage: newUser.foto_perfil_url,
-            },
+                profileImage: newUser.foto_perfil_url,            
                 token: token,
             },
         });
@@ -74,6 +73,9 @@ loginUsuario = async (req, res) => {
 
     // Comparar contraseñas
     const isMatch = await bcrypt.compare(password, user.password);
+    //const photoPerfilUrl = user.foto_perfil_url;
+    //const baseUrl= 'https://piscina-api.onrender.com';
+    //const perfilImage= `${baseUrl}${photoPerfilUrl}`;
     if (!isMatch) {
       return res.status(401).json({ success: false, message: "Credenciales incorrectas" });
     }
@@ -86,16 +88,14 @@ loginUsuario = async (req, res) => {
     res.json({
       success: true,
       message: "Login exitoso",
-      data: {
-        
+      data: {        
           id: user.user_id,
           name: user.username,
           lastname: user.lastname,
           email: user.email,
           rol: user.rol,
           userbio: user.userbio,
-          profileImage: user.foto_perfil_url,
-      
+          profileImage: user.foto_perfil_url,      
         token: token,
       },
     });
@@ -144,14 +144,14 @@ usuarioUpdate = async (req, res) => {
       success: true,
       message: 'Usuario actualizado exitosamente',
       data: {
-        user: {
+        
           id: updateUser.user_id,
           name: updateUser.username,
           lastname: updateUser.lastname,
           email: updateUser.email,
           userbio: updateUser.userbio,
           rol: updateUser.rol,
-        },
+      
         token: token,
       },
     });
