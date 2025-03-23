@@ -3,6 +3,7 @@ const cors = require('cors');
 const estadoPiscinas = require('./routes/st_piscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userroutes');
+const useclient = require('./routes/clientroutes')
 const path = require('path');
 
 
@@ -26,6 +27,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Definir
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/user', userRoutes);
+app.use('/api/clientes',useclient)
 
 
 const PORT = process.env.PORT ||5001;
