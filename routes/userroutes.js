@@ -10,7 +10,7 @@ const router = express.Router();
 // Configurar Multer para subir imágenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://frontpisinas.onrender.com/uploads/'); // Carpeta donde se guardarán las imágenes
+    cb(null, 'https://frontpicinas.onrender.com/uploads/'); // Carpeta donde se guardarán las imágenes
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
@@ -25,7 +25,7 @@ const upload = multer({ storage: storage });
 router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req, res) => {
   const { user_id } = req.body; // Recibe el user_id en la solicitud
   
-  const fotoPerfilUrl = req.file ? `https://frontpisinas.onrender.com/uploads/${req.file.filename}` : null;
+  const fotoPerfilUrl = req.file ? `https://frontpicinas.onrender.com/uploads/${req.file.filename}` : null;
   //const baseUrl = 'https://piscina-api.onrender.com';
   //const  fotoPerfilUrl= `${baseUrl}${photoPerfilUrl}`;
 
