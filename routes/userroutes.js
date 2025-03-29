@@ -25,7 +25,7 @@ const upload = multer({ storage: storage });
 router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req, res) => {
   const { user_id } = req.body; // Recibe el user_id en la solicitud
   
-  const fotoPerfilUrl = req.file ? `https://piscina-api.onrender.com/uploads/${req.file.filename}` : null;
+  const fotoPerfilUrl = req.file ? `https://frontpisinas.onrender.com/uploads/${req.file.filename}` : null;
   //const baseUrl = 'https://piscina-api.onrender.com';
   //const  fotoPerfilUrl= `${baseUrl}${photoPerfilUrl}`;
 
