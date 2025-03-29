@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const usuariosModel = require('../models/clientModel');
+const clientModel = require('../models/clientModel');
 
 registerClient = async (req, res) => {
     try {
-        const { ComanyName, email, phone, adress, nit, website, password} = req.body;
+        const { ComanyName, phone, adress, nit, website} = req.body;
 
         // Verificar si el usuario ya existe
         const clientExistente = await clientModel.getClientByEmail(email);
@@ -15,23 +15,17 @@ registerClient = async (req, res) => {
             });
         }
 
-        // Hashear la contraseña
-        const hashedPassword = await bcrypt.hash(password, 10);
+        
 
         // Crear el usuario en la base de datos
-        const newClient = await clientModel.createClient(ComanyName, email, phone, adress, nit, website, hashedPassword);
+        const newClient = await clientModel.createClient(ComanyName, phone, adress, nit, website);
 
         // Verificar que el usuario se haya creado correctamente
         if (!newClient || !newClient.cliente_id) {
             throw new Error('Error al crear el cliente en la base de datos');
         }
 
-        // Generar el token JWT
-        const token = jwt.sign(
-            { id: newClient.cliente_id, email: newClient.email},
-            process.env.JWT_SECRET, // Clave secreta desde variables de entorno
-            { expiresIn: '1h' } // Expiración del token
-        );
+        
 
         // Respuesta exitosa con el usuario registrado y el token
         res.status(201).json({
@@ -41,12 +35,11 @@ registerClient = async (req, res) => {
               
                 id: newClient.cliente_id,
                 companyname: newClient.company_name,
-                lastname: newClient.email,
-                email: newClient.phone,
-                rol: newClient.adress,
-                userbio: newClient.nit,
-                profileImage: newClient.website,            
-                token: token,
+                phone: newClient.phone,
+                adress:  newClient.adress,
+                nit: newClient.nit,
+                website: newClient.website,            
+                
             },
         });
 
@@ -73,9 +66,7 @@ loginClient = async (req, res) => {
 
     // Comparar contraseñas
     const isMatch = await bcrypt.compare(password, user.password);
-    //const photoPerfilUrl = user.foto_perfil_url;
-    //const baseUrl= 'https://piscina-api.onrender.com';
-    //const perfilImage= `${baseUrl}${photoPerfilUrl}`;
+    
     if (!isMatch) {
       return res.status(401).json({ success: false, message: "Credenciales incorrectas" });
     }
@@ -105,66 +96,27 @@ loginClient = async (req, res) => {
     res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 };
+
+
 ClientUpdate = async (req, res) => {
-  const { email, phone, adress, nit, website, cliente_id } = req.body;
+  const userId = req.params.id;
+  const updates = req.body;
 
   try {
-    // Buscar usuario en la base de datos
-    const client = await clientModel.getClientByEmail(email);
-    //console.log(users);
-    
-    // Verificar si el usuario existe
-    if (!client) {
-      return res.status(401).json({ success: false, message: "Error: cliente no encontrado" });
-    }
-    
-    const cliente_id = client.cliente_id; // Extraer el user_id del usuario encontrado
-  
+      // Construir la consulta dinámica
+      const fields = Object.keys(updates).map((key, index) => `${key} = $${index + 1}`).join(', ');
+      const values = Object.values(updates);
 
-    // Hashear la contraseña
-    //const hashedPassword = await bcrypt.hash(password, 10);
+      // Actualizar solo los campos modificados
+      const result = await clientModel.updateClient(fields, values, userId);
 
-    // Actualizar el usuario en la base de datos
-    const upClient = await clientModel.clientupdate(email, phone, adress, nit, website, cliente_id);
-   // console.log(updateUser);
-
-    // Verificar que el usuario se haya actualizado correctamente
-    if (!upClient || !upClient.cliente_id) {
-      throw new Error('Error al actualizar el Cliente en la base de datos');
-    }
-
-    // Generar el token JWT
-    const token = jwt.sign(
-      { id: upClient.cliente_id, email: upClient.email },
-      process.env.JWT_SECRET, // Clave secreta desde variables de entorno
-      { expiresIn: '1h' } // Expiración del token
-    );
-
-    // Respuesta exitosa con el usuario actualizado y el token
-    res.status(201).json({
-      success: true,
-      message: 'Cliente actualizado exitosamente',
-      data: {
-              
-        id: updateClient.cliente_id,
-        companyname: updateClient.company_name,
-        lastname: updateClient.email,
-        email: updateClient.phone,
-        rol: updateClient.adress,
-        userbio: updateClient.nit,
-        profileImage: updateClient.website,            
-        token: token,
-    },
-    });
-
+      res.status(200).json({ message: 'client updated successfully' });
   } catch (error) {
-    // Manejo de errores
-    res.status(500).json({
-      success: false,
-      message: 'Error al actualizar el Cliente',
-      error: error.message,
-    });
+      console.error('Error updating client:', error);
+      res.status(500).json({ message: 'Error updating client', error });
   }
 };
+
+
 
 module.exports = {registerClient,loginClient, ClientUpdate}

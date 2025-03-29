@@ -14,29 +14,23 @@ const createUsuario = async (username, lastname, email, hashedPassword, rol) => 
     return result.rows[0]; // Devuelve el usuario insertado con su ID
 };
 // ACTUALIZAR USUARIOS
-const updateUser = async (username, lastname, userbio, user_id) => {
+const updateUser = async (fields, values, userId) => {
   try {
-    const query = `
-      UPDATE usuarios
-      SET username = $1, lastname = $2, userbio = $3
-      WHERE user_id = $4
-      RETURNING *; 
+      // Construir la consulta dinámica
+      const query = `UPDATE usuarios SET ${fields} WHERE user_id = $${values.length + 1} RETURNING *`; // Añadir un placeholder para el userId
+      values.push(userId); // Agregar el userId al final del array de valores
+      
+      console.log('Query:', query);
+      console.log('Values:', values);
 
-    `;
-    
-    const values = [username, lastname, userbio, user_id];
-  
-    const result = await pool.query(query, values);
-    
-    if (result.rowCount === 0) {
-      throw new Error('Usuario no encontrado o no actualizado');
-    }
-    
-    console.log('User updated successfully');
-    return result.rows[0];  // Retorna el usuario actualizado
-  } catch (err) {
-    console.error('Error updating user:', err);
-    throw err;  // Re-lanza el error para que el llamador lo maneje
+      // Ejecutar la consulta
+      const result=await pool.query(query, values);
+
+      return result.rows[0];
+      
+  } catch (error) {
+      console.error('Error updating user:', error);
+      throw new Error('Error updating user');
   }
 };
 

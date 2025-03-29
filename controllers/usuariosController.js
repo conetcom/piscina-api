@@ -105,65 +105,36 @@ loginUsuario = async (req, res) => {
   }
 };
 usuarioUpdate = async (req, res) => {
-  const { username, lastname, email, userbio } = req.body;
+  const userId = req.params.id;
+  const updates = req.body;
 
   try {
-    // Buscar usuario en la base de datos
-    const users = await usuariosModel.getUsuarioByEmail(email);
-    //console.log(users);
-    
-    // Verificar si el usuario existe
-    if (!users) {
-      return res.status(401).json({ success: false, message: "Error: Usuario no encontrado" });
-    }
-    
-    const user_id = users.user_id; // Extraer el user_id del usuario encontrado
-  
+      // Construir la consulta dinámica
+      const fields = Object.keys(updates).map((key, index) => `${key} = $${index + 1}`).join(', ');
+      const values = Object.values(updates);
 
-    // Hashear la contraseña
-    //const hashedPassword = await bcrypt.hash(password, 10);
+      // Actualizar solo los campos modificados
+      const user = await usuariosModel.updateUser(fields, values, userId);
 
-    // Actualizar el usuario en la base de datos
-    const updateUser = await usuariosModel.updateUser(username, lastname, userbio, user_id);
-    console.log(updateUser);
-
-    // Verificar que el usuario se haya actualizado correctamente
-    if (!updateUser || !updateUser.user_id) {
-      throw new Error('Error al actualizar el usuario en la base de datos');
-    }
-
-    // Generar el token JWT
-    const token = jwt.sign(
-      { id: updateUser.user_id, email: updateUser.email },
-      process.env.JWT_SECRET, // Clave secreta desde variables de entorno
-      { expiresIn: '1h' } // Expiración del token
-    );
-
-    // Respuesta exitosa con el usuario actualizado y el token
-    res.status(201).json({
-      success: true,
-      message: 'Usuario actualizado exitosamente',
-      data: {
+      res.json({
+        success: true,
+        message: "usuario actualizado",
+        data: {        
+            id: user.user_id,
+            name: user.username,
+            lastname: user.lastname,
+            email: user.email,
+            rol: user.rol,
+            userbio: user.userbio,
+            profileImage: user.foto_perfil_url     
         
-          id: updateUser.user_id,
-          name: updateUser.username,
-          lastname: updateUser.lastname,
-          email: updateUser.email,
-          userbio: updateUser.userbio,
-          rol: updateUser.rol,
-      
-        token: token,
-      },
-    });
-
+        },
+      });
   } catch (error) {
-    // Manejo de errores
-    res.status(500).json({
-      success: false,
-      message: 'Error al actualizar el usuario',
-      error: error.message,
-    });
+      console.error('Error updating user:', error);
+      res.status(500).json({ message: 'Error updating user', error });
   }
 };
+
 
 module.exports = {loginUsuario,usuarioUpdate, registrarUsuario}
