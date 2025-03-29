@@ -11,6 +11,7 @@ const path = require('path');
 const app = express();
 
 
+
 // middleware
 app.use(cors({
   origin: "*", // Permite cualquier dominio
@@ -20,7 +21,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Definir carpeta pública donde estarán las imágenes
+// Servir archivos estáticos desde la carpeta 'public'
+
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads'))); // Definir carpeta pública donde estarán las imágenes
 
 
 // Usar las rutas de usuario
