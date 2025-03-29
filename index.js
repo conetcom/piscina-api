@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 // Servir archivos estáticos desde la carpeta 'public'
 
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads'))); // Definir carpeta pública donde estarán las imágenes
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Definir carpeta pública donde estarán las imágenes
 
 
 // Usar las rutas de usuario

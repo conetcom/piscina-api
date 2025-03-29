@@ -9,14 +9,15 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'public', 'uploads')); // Almacenar las imágenes en el servidor backend
+    cb(null, path.join(__dirname, '..', 'uploads')); // Carpeta donde se guardarán las imágenes
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    const filename = `${Date.now()}${ext}`; // Crear un nombre único para la imagen
+    const filename = `${Date.now()}${ext}`; // Nombre único basado en el timestamp
     cb(null, filename);
   },
 });
+
 
 const upload = multer({ storage: storage });
 
