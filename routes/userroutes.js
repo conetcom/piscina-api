@@ -10,7 +10,7 @@ const router = express.Router();
 // Configurar Multer para subir imágenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'https://piscina-api.onrender.com/uploads/'); // Carpeta donde se guardarán las imágenes
+    cb(null, 'https://frontpisinas.onrender.com/uploads/'); // Carpeta donde se guardarán las imágenes
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
