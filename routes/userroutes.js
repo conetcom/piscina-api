@@ -41,7 +41,7 @@ router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req,
       message: 'Foto de perfil actualizada exitosamente',
       success: true,
       data: {
-        user: {
+        
           id: updateUser.user_id,
           name: updateUser.username,
           lastname: updateUser.lastname,
@@ -49,7 +49,7 @@ router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req,
           rol: updateUser.rol,
           userbio: updateUser.userbio,
           profileImage: updateUser.foto_perfil_url,
-        },
+        
       },
     });
   } catch (error) {
@@ -58,6 +58,7 @@ router.post('/upload-profile-pic', upload.single('foto_perfil_url'), async (req,
 });
 
 /*
+
 
 // Configurar Multer para subir imágen
 // es

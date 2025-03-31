@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const usuariosModel = require('../models/usuariosModel');
+const usuariosModel  = require('../models/usuariosModel');
+
 
 registrarUsuario = async (req, res) => {
     try {
@@ -136,5 +137,15 @@ usuarioUpdate = async (req, res) => {
   }
 };
 
+getMessages = async (req, res) => {
+  try {
+    const result = await usuariosModel.userMessages(); // Llama correctamente al método
+    res.json(result.rows); // Envía los datos en formato JSON al frontend
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Error fetching messages' });
+  }
+};
 
-module.exports = {loginUsuario,usuarioUpdate, registrarUsuario}
+
+module.exports = {loginUsuario,usuarioUpdate, registrarUsuario, getMessages}

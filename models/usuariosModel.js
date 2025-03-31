@@ -52,4 +52,15 @@ const updatefoto = async (fotoPerfilUrl, user_id) => {
   }
 };
 
-module.exports = { getUsuarioByEmail, createUsuario,updateUser, updatefoto};
+const userMessages = async () => {
+  try {
+    const query = 'SELECT * FROM messages ORDER BY created_at DESC';
+    const result = await pool.query(query);
+    return result; // Devuelve el resultado de la consulta
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    throw error; // Lanza el error para que sea manejado en el controlador
+  }
+};
+
+module.exports = { getUsuarioByEmail, createUsuario,updateUser, updatefoto, userMessages};
