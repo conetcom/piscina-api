@@ -41,12 +41,12 @@ const updatefoto = async (fotoPerfilUrl, user_id) => {
   try {
     const query = `UPDATE usuarios SET foto_perfil_url = $1 WHERE user_id = $2 RETURNING *`;
     const values = [fotoPerfilUrl, user_id];
-    console.log(values);
+    console.log('datos almacenados',query);
 
     const result = await pool.query(query, values);
     return result.rows[0]; // Retorna el usuario actualizado
   } catch (err) {
-    console.log(data)
+    //console.log(data)
     console.error('Error al actualizar la foto de perfil:', err);
     throw err;
   }
@@ -63,4 +63,17 @@ const userMessages = async () => {
   }
 };
 
-module.exports = { getUsuarioByEmail, createUsuario,updateUser, updatefoto, userMessages};
+const saveReplyToMessage = async (messageId, userId, reply) => {
+  const query = `
+    INSERT INTO message_replies (message_id, user_id, reply)    VALUES ($1, $2, $3) `;
+  const values = [messageId, userId, reply];
+
+  try {
+    await pool.query(query, values);
+  } catch (error) {
+    console.error('Error saving reply to database:', error);
+    throw error;
+  }
+};
+
+module.exports = { getUsuarioByEmail, createUsuario, updateUser, updatefoto, userMessages, saveReplyToMessage };

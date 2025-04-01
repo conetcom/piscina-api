@@ -148,4 +148,25 @@ getMessages = async (req, res) => {
 };
 
 
-module.exports = {loginUsuario,usuarioUpdate, registrarUsuario, getMessages}
+replyToMessage = async (req, res) => {
+  console.log("REQ.BODY:", req.body);
+  const { id } = req.params; // ID del mensaje original
+  const { reply, user_id } = req.body; // El texto de la respuesta
+  //const userId = req.body; // ID del usuario que responde (esto asume que tienes autenticación)
+console.log({user_id});
+  if (!reply) {
+    return res.status(400).json({ error: 'Reply content is required' });
+  }
+
+  try {
+    // Llamada al modelo para guardar la respuesta
+    await usuariosModel.saveReplyToMessage(id, user_id, reply);
+    res.status(201).json({ message: 'Reply added successfully' });
+  } catch (error) {
+    console.error('Error saving reply:', error);
+    res.status(500).json({ error: 'Error saving reply' });
+  }
+};
+
+module.exports = { loginUsuario, usuarioUpdate, registrarUsuario, getMessages, replyToMessage };
+
