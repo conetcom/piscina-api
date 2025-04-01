@@ -94,13 +94,13 @@ loginUsuario = async (req, res) => {
       data: {
         user:
         {
-          id: newUser.user_id,
-          name: newUser.username,
-          lastname: newUser.lastname,
-          email: newUser.email,
-          rol: newUser.rol,
-          userbio: newUser.userbio,
-          profileImage: newUser.foto_perfil_url 
+          id: user.user_id,
+          name: user.username,
+          lastname: user.lastname,
+          email: user.email,
+          rol: user.rol,
+          userbio: user.userbio,
+          profileImage: user.foto_perfil_url 
         },        
           token: token
       },
@@ -128,13 +128,13 @@ usuarioUpdate = async (req, res) => {
         data: {
           user:
           {
-            id: newUser.user_id,
-            name: newUser.username,
-            lastname: newUser.lastname,
-            email: newUser.email,
-            rol: newUser.rol,
-            userbio: newUser.userbio,
-            profileImage: newUser.foto_perfil_url 
+            id: user.user_id,
+            name: user.username,
+            lastname: user.lastname,
+            email: user.email,
+            rol: user.rol,
+            userbio: user.userbio,
+            profileImage: user.foto_perfil_url 
           }     
             
         },
