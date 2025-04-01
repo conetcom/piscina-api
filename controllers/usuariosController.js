@@ -39,15 +39,17 @@ registrarUsuario = async (req, res) => {
             success: true,
             message: 'Usuario registrado exitosamente',
             data: {
-              
+              user:
+              {
                 id: newUser.user_id,
                 name: newUser.username,
                 lastname: newUser.lastname,
                 email: newUser.email,
                 rol: newUser.rol,
                 userbio: newUser.userbio,
-                profileImage: newUser.foto_perfil_url,            
-                token: token,
+                profileImage: newUser.foto_perfil_url 
+              },        
+                token: token
             },
         });
 
@@ -89,15 +91,18 @@ loginUsuario = async (req, res) => {
     res.json({
       success: true,
       message: "Login exitoso",
-      data: {        
-          id: user.user_id,
-          name: user.username,
-          lastname: user.lastname,
-          email: user.email,
-          rol: user.rol,
-          userbio: user.userbio,
-          profileImage: user.foto_perfil_url,      
-        token: token,
+      data: {
+        user:
+        {
+          id: newUser.user_id,
+          name: newUser.username,
+          lastname: newUser.lastname,
+          email: newUser.email,
+          rol: newUser.rol,
+          userbio: newUser.userbio,
+          profileImage: newUser.foto_perfil_url 
+        },        
+          token: token
       },
     });
   } catch (error) {
@@ -120,15 +125,18 @@ usuarioUpdate = async (req, res) => {
       res.json({
         success: true,
         message: "usuario actualizado",
-        data: {        
-            id: user.user_id,
-            name: user.username,
-            lastname: user.lastname,
-            email: user.email,
-            rol: user.rol,
-            userbio: user.userbio,
-            profileImage: user.foto_perfil_url     
-        
+        data: {
+          user:
+          {
+            id: newUser.user_id,
+            name: newUser.username,
+            lastname: newUser.lastname,
+            email: newUser.email,
+            rol: newUser.rol,
+            userbio: newUser.userbio,
+            profileImage: newUser.foto_perfil_url 
+          }     
+            
         },
       });
   } catch (error) {
