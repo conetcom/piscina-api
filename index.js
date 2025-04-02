@@ -1,38 +1,40 @@
-const express =require('express');
+// index.js
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const path = require('path');
 const cors = require('cors');
-const estadoPiscinas = require('./routes/st_piscinasRoutes');
+const socketController = require('./controllers/socketController'); // Importamos el controlador
+
+// Importamos las rutas
+const estadoPiscinas = require('./routes/estadoPiscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userroutes');
-const useclient = require('./routes/clientroutes')
-const path = require('path');
+const clientRoutes = require('./routes/clientRoutes');
 
-
+// Configuración de CORS
+const corsConfig = require('./config/corsConfig');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
-
+// Llamamos a la función de configuración de socket
+socketController(io);
 
 // middleware
-app.use(cors({
-  origin: "*", // Permite cualquier dominio
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: "Content-Type,Authorization",
-  credentials: true // ⚠️ NO usar true con "*" por seguridad
-}));
-
+app.use(cors(corsConfig));  // Usamos la configuración de CORS
 app.use(express.json());
-// Servir archivos estáticos desde la carpeta 'public'
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Definir carpeta pública donde estarán las imágenes
+// Servir archivos estáticos desde la carpeta 'uploads'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
-// Usar las rutas de usuario
+// Usar las rutas de la aplicación
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/user', userRoutes);
-app.use('/api/clientes',useclient)
+app.use('/api/clientes', clientRoutes);
 
-
-const PORT = process.env.PORT ||5001;
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
-
+// Iniciar el servidor
+const PORT = process.env.PORT || 5001;
+server.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

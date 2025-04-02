@@ -65,7 +65,7 @@ const userMessages = async () => {
 
 const saveReplyToMessage = async (messageId, userId, reply) => {
   const query = `
-    INSERT INTO message_replies (message_id, user_id, reply)    VALUES ($1, $2, $3) `;
+    INSERT INTO message_replies (message_id, user_id, users, reply)    VALUES ($1, $2, $3) `;
   const values = [messageId, userId, reply];
 
   try {
