@@ -10,7 +10,7 @@ const socketController = require('./controllers/socketController'); // Importamo
 const estadoPiscinas = require('./routes/estadoPiscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userroutes');
-const clientRoutes = require('./routes/clientRoutes');
+const clientRoutes = require('./routes/clientroutes');
 
 // Configuración de CORS
 const corsConfig = require('./config/corsConfig');
