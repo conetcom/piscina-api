@@ -13,11 +13,14 @@ const userRoutes = require('./routes/userroutes');
 const clientRoutes = require('./routes/clientroutes');
 
 // Configuración de CORS
+
 const corsConfig = require('./config/corsConfig');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server, {
+    cors: { origin: '*' }, // Permitir conexiones desde cualquier origen
+  });
 
 // Llamamos a la función de configuración de socket
 socketController(io);

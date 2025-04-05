@@ -2,8 +2,12 @@
 let users = {}; // Aquí guardamos las conexiones de usuario
 
 module.exports = (io) => {
+    let messages = []; // Almacenamiento temporal de mensajes
     io.on('connection', (socket) => {
         console.log('Nuevo usuario conectado');
+  // Enviar mensajes anteriores al usuario nuevo
+    
+  socket.emit('previousMessages', messages);
 
         // Guardar la conexión del usuario
         socket.on('register', (userId) => {
