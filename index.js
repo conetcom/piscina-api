@@ -1,7 +1,7 @@
 // index.js
 const express = require('express');
 const http = require('http');
-const Server = require('socket.io');
+const server = require('socket.io');
 const path = require('path');
 const cors = require('cors');
 const socketController = require('./controllers/socketController'); // Importamos el controlador
@@ -17,8 +17,8 @@ const clientRoutes = require('./routes/clientroutes');
 const corsConfig = require('./config/corsConfig');
 
 const app = express();
-const Server = http.createServer(app);
-const io = new Server(server, {
+const server = http.createServer(app);
+const io = new server(server, {
     cors: { origin: '*' }, // Permitir conexiones desde cualquier origen
   });
 
