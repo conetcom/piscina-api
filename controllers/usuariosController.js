@@ -145,65 +145,12 @@ usuarioUpdate = async (req, res) => {
   }
 };
 
-getMessages = async (req, res) => {
-  try {
-    const result = await usuariosModel.userMessages(); // Llama correctamente al método
-    res.json(result.rows); // Envía los datos en formato JSON al frontend
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ error: 'Error fetching messages' });
-  }
-};
-
-
-replyToMessage = async (req, res) => {
-  
-  const { id } = req.params; // ID del mensaje original
-  const { reply, user_id } = req.body; // El texto de la respuesta
-  //const userId = req.body; // ID del usuario que responde (esto asume que tienes autenticación)
-console.log({user_id});
-  if (!reply) {
-    return res.status(400).json({ error: 'Reply content is required' });
-  }
-
-  try {
-    // Llamada al modelo para guardar la respuesta
-    await usuariosModel.saveReplyToMessage(id, user_id, reply);
-    res.status(201).json({ message: 'Reply added successfully' });
-  } catch (error) {
-    console.error('Error saving reply:', error);
-    res.status(500).json({ error: 'Error saving reply' });
-  }
-};
-
-const createMessage = async (req, res) => {
-  const { text, sender, user_id, foto_perfil_url } = req.body;
-
-  if (!text || !sender || !user_id) {
-    return res.status(400).json({ error: 'Campos incompletos' });
-  }
-
-  try {
-    // Guardamos y obtenemos el resultado
-    const result = await usuariosModel.saveMessages(text, sender, user_id, foto_perfil_url);
-
-    const newMessage = result.rows[0]; // ✅ ahora sí existe
-
-    // Emitimos a todos los clientes conectados vía socket.io
-    if (req.io) {
-      req.io.emit('newMessage', newMessage);
-    }
-
-    res.status(201).json(newMessage);
-  } catch (error) {
-    console.error('Error insertando mensaje:', error);
-    res.status(500).json({ error: 'Error al crear mensaje' });
-  }
-};
 
 
 
 
 
-module.exports = { loginUsuario, usuarioUpdate, registrarUsuario, getMessages, replyToMessage, createMessage };
+
+
+module.exports = { loginUsuario, usuarioUpdate, registrarUsuario};
 
