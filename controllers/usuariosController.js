@@ -157,7 +157,7 @@ getMessages = async (req, res) => {
 
 
 replyToMessage = async (req, res) => {
-  console.log("REQ.BODY:", req.body);
+  
   const { id } = req.params; // ID del mensaje original
   const { reply, user_id } = req.body; // El texto de la respuesta
   //const userId = req.body; // ID del usuario que responde (esto asume que tienes autenticación)
@@ -176,5 +176,34 @@ console.log({user_id});
   }
 };
 
-module.exports = { loginUsuario, usuarioUpdate, registrarUsuario, getMessages, replyToMessage };
+const createMessage = async (req, res) => {
+  const { text, sender, user_id, foto_perfil_url } = req.body;
+
+  if (!text || !sender || !user_id) {
+    return res.status(400).json({ error: 'Campos incompletos' });
+  }
+
+  try {
+    // Guardamos y obtenemos el resultado
+    const result = await usuariosModel.saveMessages(text, sender, user_id, foto_perfil_url);
+
+    const newMessage = result.rows[0]; // ✅ ahora sí existe
+
+    // Emitimos a todos los clientes conectados vía socket.io
+    if (req.io) {
+      req.io.emit('newMessage', newMessage);
+    }
+
+    res.status(201).json(newMessage);
+  } catch (error) {
+    console.error('Error insertando mensaje:', error);
+    res.status(500).json({ error: 'Error al crear mensaje' });
+  }
+};
+
+
+
+
+
+module.exports = { loginUsuario, usuarioUpdate, registrarUsuario, getMessages, replyToMessage, createMessage };
 

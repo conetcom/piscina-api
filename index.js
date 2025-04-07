@@ -11,7 +11,7 @@ const estadoPiscinas = require('./routes/estadoPiscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userroutes');
 const clientRoutes = require('./routes/clientroutes');
-
+const messageRoutes = require('./routes/messageRoutes');
 // Configuración de CORS
 
 const corsConfig = require('./config/corsConfig');
@@ -37,7 +37,8 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/user', userRoutes);
 app.use('/api/clientes', clientRoutes);
+app.use('./api/messages', messageRoutes);
 
-// Iniciar el servidor
+// Iniciar el servido
 const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
