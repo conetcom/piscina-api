@@ -12,6 +12,7 @@ const saveMessages = async (text, sender, user_id, foto_perfil_url) => {
 const userMessages = async () => {
   const query = 'SELECT * FROM messages ORDER BY created_at DESC';
   const result = await pool.query(query);
+  console.log(result);
   return result.rows;
 };
 

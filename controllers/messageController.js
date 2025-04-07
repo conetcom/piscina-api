@@ -5,6 +5,7 @@ const messageModel = require('../models/messagesModel'); // ✅
 const getMessages = async (req, res) => {
   try {
     const messages = await messageModel.userMessages();
+    console.log('paso por aqui');
     res.status(200).json(messages);
   } catch (error) {
     console.error('Error al obtener mensajes:', error);
