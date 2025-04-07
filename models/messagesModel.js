@@ -1,4 +1,4 @@
-const pool = require('../db');
+const pool = require('./database');
 
 const saveMessages = async (text, sender, user_id, foto_perfil_url) => {
   const query = `

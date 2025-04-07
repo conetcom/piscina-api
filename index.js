@@ -37,7 +37,7 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/user', userRoutes);
 app.use('/api/clientes', clientRoutes);
-app.use('./api/messages', messageRoutes);
+app.use('./api', messageRoutes);
 
 // Iniciar el servido
 const PORT = process.env.PORT || 5001;
