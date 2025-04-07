@@ -37,7 +37,7 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/clientes', clientRoutes);
 app.use('./api', messageRoutes);
-app.use('./api/user', userroutes);
+app.use('./api/user', userRoutes);
 
 // Iniciar el servido
 const PORT = procss.env.PORT || 5001;
