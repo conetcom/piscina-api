@@ -9,7 +9,7 @@ const socketController = require('./controllers/socketController'); // Importamo
 // Importamos las rutas
 const estadoPiscinas = require('./routes/estadoPiscinasRoutes');
 const usuariosRoutes = require('./routes/usuariosRoutes');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userroutes');
 const clientRoutes = require('./routes/clientroutes');
 const messageRoutes = require('./routes/messageRoutes');
 // Configuración de CORS
@@ -35,10 +35,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Usar las rutas de la aplicación
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
-app.use('/api/user', userRoutes);
 app.use('/api/clientes', clientRoutes);
 app.use('./api', messageRoutes);
+app.use('./api/user', userroutes);
 
 // Iniciar el servido
-const PORT = process.env.PORT || 5001;
+const PORT = procss.env.PORT || 5001;
 server.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
