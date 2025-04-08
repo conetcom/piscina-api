@@ -1,10 +1,10 @@
-const messageModel = require('../models/messagesModel'); // ✅
+const messagesModel = require('../models/messagesModel'); // ✅
 
 
 // GET /api/usuarios/messages
 const getMessages = async (req, res) => {
   try {
-    const messages = await messageModel.userMessages();
+    const messages = await messagesModel.userMessages();
     console.log('paso por aqui');
     res.status(200).json(messages);
   } catch (error) {
@@ -22,7 +22,7 @@ const createMessage = async (req, res) => {
   }
 
   try {
-    const result = await messageModel.saveMessages(text, sender, user_id, foto_perfil_url);
+    const result = await messagesModel.saveMessages(text, sender, user_id, foto_perfil_url);
     const newMessage = result.rows[0];
 
     // Emitimos el mensaje vía WebSocket
@@ -47,7 +47,7 @@ const replyToMessage = async (req, res) => {
   }
 
   try {
-    await messageModel.saveReplyToMessage(id, user_id, reply);
+    await messagesModel.saveReplyToMessage(id, user_id, reply);
 
     if (req.io) {
       req.io.emit('newReply', { messageId: id, reply, user_id });

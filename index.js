@@ -36,8 +36,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/clientes', clientRoutes);
-app.use('./api', messageRoutes);
-app.use('./api/user', userRoutes);
+app.use('/api', messageRoutes);
+app.use('/api/user', userRoutes);
 
 // Iniciar el servido
 const PORT = process.env.PORT || 5001;
