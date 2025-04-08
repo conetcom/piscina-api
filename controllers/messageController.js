@@ -15,14 +15,14 @@ const getMessages = async (req, res) => {
 
 // POST /api/usuarios/messages
 const createMessage = async (req, res) => {
-  const { text, sender, user_id, foto_perfil_url } = req.body;
+  const { text, sender, user_id, avatar } = req.body;
 
   if (!text || !sender || !user_id) {
     return res.status(400).json({ error: 'Campos incompletos' });
   }
 
   try {
-    const result = await messagesModel.saveMessages(text, sender, user_id, foto_perfil_url);
+    const result = await messagesModel.saveMessages(text, sender, user_id, avatar);
     const newMessage = result.rows[0];
 
     // Emitimos el mensaje vía WebSocket
