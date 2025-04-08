@@ -4,7 +4,7 @@ const messagesModel = require('../models/messagesModel'); // ✅
 // GET /api/usuarios/messages
 const getMessages = async (req, res) => {
   try {
-    const messages = await usuariosModel.getMessagesWithReplies();
+    const messages = await messagesModel.getMessagesWithReplies();
     res.status(200).json(messages);
   } catch (error) {
     console.error('Error al obtener mensajes con respuestas:', error);

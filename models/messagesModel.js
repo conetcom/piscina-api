@@ -62,5 +62,5 @@ module.exports = {
   saveMessages,
   userMessages,
   saveReplyToMessage,
-  getMessagesWithReplies
+  getMessagesWithReplies,
 };
