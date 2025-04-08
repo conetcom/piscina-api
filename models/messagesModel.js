@@ -27,10 +27,16 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
 const getMessagesWithReplies = async () => {
   try {
     const messagesQuery = `
-      SELECT * FROM messages ORDER BY created_at DESC
+      SELECT m.*, u.username AS users
+      FROM messages m
+      JOIN users u ON m.user_id = u.id
+      ORDER BY m.created_at DESC
     `;
+
     const repliesQuery = `
-      SELECT * FROM message_replies
+      SELECT r.*, u.username AS username
+      FROM message_replies r
+      LEFT JOIN users u ON r.user_id = u.id
     `;
 
     const [messagesResult, repliesResult] = await Promise.all([
@@ -57,6 +63,7 @@ const getMessagesWithReplies = async () => {
     throw error;
   }
 };
+
 const getMessageByIdWithReplies = async (id) => {
   try {
     const messageQuery = `
