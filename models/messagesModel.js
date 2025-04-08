@@ -57,10 +57,39 @@ const getMessagesWithReplies = async () => {
     throw error;
   }
 };
+const getMessageByIdWithReplies = async (id) => {
+  try {
+    const messageQuery = `
+      SELECT * FROM messages WHERE id = $1
+    `;
+    const repliesQuery = `
+      SELECT * FROM message_replies WHERE message_id = $1 ORDER BY created_at ASC
+    `;
+
+    const [messageResult, repliesResult] = await Promise.all([
+      pool.query(messageQuery, [id]),
+      pool.query(repliesQuery, [id]),
+    ]);
+
+    if (messageResult.rows.length === 0) {
+      return null;
+    }
+
+    const message = messageResult.rows[0];
+    message.replies = repliesResult.rows;
+
+    return message;
+  } catch (error) {
+    console.error('Error al obtener mensaje con replies:', error);
+    throw error;
+  }
+};
+
 
 module.exports = {
   saveMessages,
   userMessages,
   saveReplyToMessage,
   getMessagesWithReplies,
+  getMessageByIdWithReplies,
 };

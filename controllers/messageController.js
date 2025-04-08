@@ -38,6 +38,7 @@ const createMessage = async (req, res) => {
 };
 
 // POST /api/usuarios/messages/:id/reply
+
 const replyToMessage = async (req, res) => {
   const { id } = req.params;
   const { reply, user_id } = req.body;
@@ -49,16 +50,19 @@ const replyToMessage = async (req, res) => {
   try {
     await messagesModel.saveReplyToMessage(id, user_id, reply);
 
+    const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
+
     if (req.io) {
-      req.io.emit('newReply', { messageId: id, reply, user_id });
+      req.io.emit('newReply', updatedMessage);
     }
 
-    res.status(201).json({ message: 'Respuesta guardada correctamente' });
+    res.status(201).json(updatedMessage);
   } catch (error) {
     console.error('Error al guardar respuesta:', error);
     res.status(500).json({ error: 'Error al guardar respuesta' });
   }
 };
+
 
 module.exports = {
   getMessages,
