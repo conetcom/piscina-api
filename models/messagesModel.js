@@ -6,8 +6,25 @@ const saveMessages = async (text, sender, user_id, avatar) => {
     VALUES ($1, $2, $3, $4, NOW()) RETURNING *`;
   const values = [text, sender, user_id, avatar];
   const result = await pool.query(query, values);
-  return result;
+
+  // Obtener username del usuario
+  const userResult = await pool.query(
+    `SELECT username FROM usuarios WHERE user_id = $1`,
+    [user_id]
+  );
+
+  const username = userResult.rows[0]?.username || 'Usuario';
+
+  // Construir objeto con replies vacíos
+  const fullMessage = {
+    ...result.rows[0], // ✅ aquí estaba el error
+    usuarios: username,
+    replies: [], // <- al ser nuevo mensaje
+  };
+
+  return fullMessage;
 };
+
 
 const userMessages = async () => {
   const query = 'SELECT * FROM messages ORDER BY created_at DESC';
