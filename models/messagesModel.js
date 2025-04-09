@@ -27,16 +27,17 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
 const getMessagesWithReplies = async () => {
   try {
     const messagesQuery = `
-      SELECT m.*, u.username AS users
-      FROM messages m
-      JOIN users u ON m.user_id = u.id
-      ORDER BY m.created_at DESC
+     SELECT m.*, u.username AS usuarios
+    FROM messages m
+    JOIN usuarios u ON m.user_id = u.user_id
+    ORDER BY m.created_at DESC;
     `;
 
     const repliesQuery = `
       SELECT r.*, u.username AS username
-      FROM message_replies r
-      LEFT JOIN users u ON r.user_id = u.id
+FROM message_replies r
+LEFT JOIN usuarios u ON r.user_id = u.user_id;
+
     `;
 
     const [messagesResult, repliesResult] = await Promise.all([
