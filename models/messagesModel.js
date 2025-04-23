@@ -23,7 +23,7 @@ const saveMessages = async (text, sender, user_id, avatar) => {
     avatar: foto_perfil,
     id: result.rows[0].id,  // Incluimos el id generado por la base de datos
     messages: result.rows[0].messages,
-    usuarios: username,
+    username,
     replies: [],  // Al ser un mensaje nuevo, las respuestas están vacías
   };
 
