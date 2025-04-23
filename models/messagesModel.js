@@ -2,7 +2,7 @@ const pool = require('./database');
 
 const saveMessages = async (text, sender, user_id, avatar) => {
   const query = `
-    INSERT INTO messages (messages, users, user_id, foto_perfil_url, created_at)
+    INSERT INTO messages (messages, users, user_id, avatar_url, created_at)
     VALUES ($1, $2, $3, $4, NOW()) RETURNING *`;
   const values = [text, sender, user_id, avatar];
   const result = await pool.query(query, values);
