@@ -2,21 +2,24 @@ const pool = require('./database');
 
 const saveMessages = async (text, sender, user_id, avatar) => {
   const query = `
-    INSERT INTO messages (messages, users, user_id, avatar_url, created_at)
+    INSERT INTO messages (messages, users, user_id, foto_perfil_url, created_at)
     VALUES ($1, $2, $3, $4, NOW()) RETURNING *`;
   const values = [text, sender, user_id, avatar];
   const result = await pool.query(query, values);
 
   // Obtener username del usuario
   const userResult = await pool.query(
-    `SELECT username FROM usuarios WHERE user_id = $1`,
+    `SELECT username, foto_perfil_url FROM usuarios WHERE user_id = $1`,
     [user_id]
   );
 
   const username = userResult.rows[0]?.username || 'Usuario';
+  //const avatar = userResult.rows[0].foto_perfil_url;
 
   // Construir objeto con replies vacíos
   const fullMessage = {
+    user_id,
+    avatar,
     id: result.rows[0].id,  // Incluimos el id generado por la base de datos
     messages: result.rows[0].messages,
     usuarios: username,
