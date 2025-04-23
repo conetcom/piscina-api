@@ -23,7 +23,7 @@ const createMessage = async (req, res) => {
 
   try {
     const result = await messagesModel.saveMessages(text, sender, user_id, avatar);
-    console.log(result);
+   // console.log(result);
     const newMessage = result;
 
     // Emitimos el mensaje vía WebSocket
