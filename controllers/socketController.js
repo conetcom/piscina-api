@@ -32,7 +32,7 @@ module.exports = (io) => {
                     usuarios: from,  // Alias o nombre del usuario
                     replies: [] // No tiene respuestas por ahora
                 };
-
+console.log(newMessage);
                 messages.push(newMessage); // Almacenar el mensaje en el arreglo de mensajes
 
                 // Emitir el mensaje a todos los clientes conectados (en caso de que necesiten verlo)
