@@ -17,19 +17,18 @@ const saveMessages = async (text, sender, user_id, avatar) => {
 
   // Construir objeto con replies vacíos
   const fullMessage = {
-    ...result.rows[0], // ✅ aquí estaba el error
+    id: result.rows[0].id,  // Incluimos el id generado por la base de datos
+    messages: result.rows[0].messages,
     usuarios: username,
-    replies: [], // <- al ser nuevo mensaje
+    replies: [],  // Al ser un mensaje nuevo, las respuestas están vacías
   };
 
   return fullMessage;
 };
 
-
 const userMessages = async () => {
   const query = 'SELECT * FROM messages ORDER BY created_at DESC';
   const result = await pool.query(query);
-  console.log(result);
   return result.rows;
 };
 
@@ -47,15 +46,12 @@ const getMessagesWithReplies = async () => {
      SELECT m.*, u.username AS usuarios
     FROM messages m
     JOIN usuarios u ON m.user_id = u.user_id
-    ORDER BY m.created_at DESC;
-    `;
+    ORDER BY m.created_at DESC;`;
 
     const repliesQuery = `
       SELECT r.*, u.username AS username
-FROM message_replies r
-LEFT JOIN usuarios u ON r.user_id = u.user_id;
-
-    `;
+    FROM message_replies r
+    LEFT JOIN usuarios u ON r.user_id = u.user_id;`;
 
     const [messagesResult, repliesResult] = await Promise.all([
       pool.query(messagesQuery),
@@ -72,24 +68,22 @@ LEFT JOIN usuarios u ON r.user_id = u.user_id;
 
     const messagesWithReplies = messagesResult.rows.map((msg) => ({
       ...msg,
-      replies: repliesByMessage[msg.id] || [],
+      replies: repliesByMessage[msg.id] || [],  // Asocia las respuestas al mensaje
     }));
 
     return messagesWithReplies;
   } catch (error) {
-    console.error('Error al obtener mensajes con respuestas:', error);
-    throw error;
+    console.error('Error al obtener mensajes con respuestas:', error.message);
+    throw new Error('Error al obtener mensajes con respuestas');
   }
 };
 
 const getMessageByIdWithReplies = async (id) => {
   try {
     const messageQuery = `
-      SELECT * FROM messages WHERE id = $1
-    `;
+      SELECT * FROM messages WHERE id = $1`;
     const repliesQuery = `
-      SELECT * FROM message_replies WHERE message_id = $1 ORDER BY created_at ASC
-    `;
+      SELECT * FROM message_replies WHERE message_id = $1 ORDER BY created_at ASC`;
 
     const [messageResult, repliesResult] = await Promise.all([
       pool.query(messageQuery, [id]),
@@ -97,7 +91,7 @@ const getMessageByIdWithReplies = async (id) => {
     ]);
 
     if (messageResult.rows.length === 0) {
-      return null;
+      throw new Error('Mensaje no encontrado');
     }
 
     const message = messageResult.rows[0];
@@ -105,11 +99,10 @@ const getMessageByIdWithReplies = async (id) => {
 
     return message;
   } catch (error) {
-    console.error('Error al obtener mensaje con replies:', error);
+    console.error('Error al obtener mensaje con replies:', error.message);
     throw error;
   }
 };
-
 
 module.exports = {
   saveMessages,

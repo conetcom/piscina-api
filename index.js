@@ -36,7 +36,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/clientes', clientRoutes);
-app.use('/api', messageRoutes);
+const messageRoutes = require('./routes/messageRoutes');
+app.use('/api', (req, res, next) => {
+  req.io = io; // 👈 inyectamos io en cada request
+  next();
+}, messageRoutes);
 app.use('/api/user', userRoutes);
 
 // Iniciar el servido
