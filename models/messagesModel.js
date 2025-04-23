@@ -19,7 +19,7 @@ const saveMessages = async (text, sender, user_id, avatar) => {
   // Construir objeto con replies vacíos
   const fullMessage = {
     user_id,
-    avatar,
+    avatar: foto_perfil_url,
     id: result.rows[0].id,  // Incluimos el id generado por la base de datos
     messages: result.rows[0].messages,
     usuarios: username,
