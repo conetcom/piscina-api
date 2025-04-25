@@ -6,6 +6,7 @@ const uploadImage = async (req, res) => {
   try {
     const file = req.file;
     const { user_id } = req.body; // 👈 Llega del frontend (formData)
+    console.log(user_id, file)
 
     if (!file || !user_id) {
       return res.status(400).json({ error: 'Faltan datos: imagen o user_id' });
