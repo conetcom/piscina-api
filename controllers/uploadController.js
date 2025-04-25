@@ -18,6 +18,8 @@ const uploadImage = async (req, res) => {
 
     fs.unlinkSync(file.path);
 console.log(result);
+console.log('Cloudinary config:', cloudinary.config());
+
     const imagenGuardada = await usuariosModel.updatefoto(file.originalname, result.secure_url, result.public_id, user_id);
 
     res.status(200).json({
