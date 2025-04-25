@@ -7,24 +7,13 @@ const saveMessages = async (text, sender, user_id, avatar) => {
   const values = [text, sender, user_id, avatar];
   const result = await pool.query(query, values);
 
-  // Obtener username del usuario
-  const userResult = await pool.query(
-    `SELECT username, foto_perfil_url FROM usuarios WHERE user_id = $1`,
-    [user_id]
-  );
-
-  const foto_perfil = userResult.rows[0]?.foto_perfil_url;
-  const username = userResult.rows[0]?.username || 'Usuario';
-  //const avatar = userResult.rows[0].foto_perfil_url;
-
-  // Construir objeto con replies vacíos
+  // Obtener solo el username del usuario
   const fullMessage = {
     user_id,
-    avatar: foto_perfil,
-    id: result.rows[0].id,  // Incluimos el id generado por la base de datos
-    messages: result.rows[0].messages,
-    username,
-    replies: [],  // Al ser un mensaje nuevo, las respuestas están vacías
+    avatar, // 👈 ya lo tienes
+    messages,
+    users,
+    replies: [],
   };
 
   return fullMessage;
