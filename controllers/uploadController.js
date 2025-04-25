@@ -18,6 +18,7 @@ const uploadImage = async (req, res) => {
     fs.unlinkSync(file.path);
 
     const fotoPerfilUrl = result.secure_url;
+    console.log(fotoPerfilUrl, user_id)
     const imagenGuardada = await usuariosModel.updatefoto(fotoPerfilUrl, user_id);
 
     res.status(200).json({
