@@ -10,7 +10,7 @@ const saveMessages = async (text, sender, user_id, avatar) => {
   // Obtener solo el username del usuario
   const fullMessage = {
     user_id,
-    avatar, // 👈 ya lo tienes
+    avatar_url, // 👈 ya lo tienes
     messages,
     users,
     replies: [],
