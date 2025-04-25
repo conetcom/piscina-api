@@ -12,6 +12,8 @@ const usuariosRoutes = require('./routes/usuariosRoutes');
 const userRoutes = require('./routes/userRoutes');
 const clientRoutes = require('./routes/clientroutes');
 const messageRoutes = require('./routes/messageRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
+
 // Configuración de CORS
 
 const corsConfig = require('./config/corsConfig');
@@ -41,6 +43,7 @@ app.use('/api', (req, res, next) => {
   next();
 }, messageRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api', uploadRoutes);
 
 // Iniciar el servido
 const PORT = process.env.PORT || 5001;
