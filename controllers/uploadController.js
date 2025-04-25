@@ -1,12 +1,11 @@
 const cloudinary = require('../config/cloudinary');
 const fs = require('fs');
-const { usuariosModel } = require('../models/usuariosModel');
+const usuariosModel = require('../models/usuariosModel'); // ✅ cambio aquí
 
 const uploadImage = async (req, res) => {
   try {
     const file = req.file;
-    const { user_id } = req.body; // 👈 Llega del frontend (formData)
-    console.log(user_id, file)
+    const { user_id } = req.body;
 
     if (!file || !user_id) {
       return res.status(400).json({ error: 'Faltan datos: imagen o user_id' });
@@ -17,7 +16,8 @@ const uploadImage = async (req, res) => {
     });
 
     fs.unlinkSync(file.path);
-const fotoPerfilUrl = result.url;
+
+    const fotoPerfilUrl = result.secure_url;
     const imagenGuardada = await usuariosModel.updatefoto(fotoPerfilUrl, user_id);
 
     res.status(200).json({
