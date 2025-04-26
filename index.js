@@ -38,10 +38,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/st_piscinas', estadoPiscinas);
 app.use('/api/clientes', clientRoutes);
-app.use('/api', (req, res, next) => {
-  req.io = io; // 👈 inyectamos io en cada request
+app.use('/api/messages', (req, res, next) => {
+  req.io = io; 
   next();
 }, messageRoutes);
+
 app.use('/api/user', userRoutes);
 app.use('/api', uploadRoutes);
 
