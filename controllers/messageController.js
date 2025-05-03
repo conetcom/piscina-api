@@ -23,7 +23,7 @@ const createMessage = async (req, res) => {
 
   try {
     const result = await messagesModel.saveMessages(text, sender, user_id, avatar);
-    console.log(result);
+   
     const newMessage = result;
 
     // Emitimos el mensaje vía WebSocket
@@ -42,15 +42,15 @@ const createMessage = async (req, res) => {
 
 const replyToMessage = async (req, res) => {
   const { id } = req.params;
-  const { reply, user_id } = req.body;
+  const { reply, user_id, avatar } = req.body;
 
   if (!reply || !user_id) {
     return res.status(400).json({ error: 'Faltan datos para responder' });
   }
 
   try {
-    await messagesModel.saveReplyToMessage(id, user_id, reply);
-
+   const result= await messagesModel.saveReplyToMessage(id, user_id, reply, avatar);
+   console.log(result);
     const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
 
     if (req.io) {
