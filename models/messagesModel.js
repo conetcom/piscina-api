@@ -47,7 +47,7 @@ const getMessagesWithReplies = async () => {
      SELECT m.*, u.username AS usuarios
     FROM messages m
     JOIN usuarios u ON m.user_id = u.user_id
-    ORDER BY m.created_at DESC; LIMIT 10`;
+    ORDER BY m.created_at DESC LIMIT 10`;
 
     const repliesQuery = `
       SELECT r.*, u.username AS username
