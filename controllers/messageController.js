@@ -51,13 +51,13 @@ const replyToMessage = async (req, res) => {
   try {
    const result= await messagesModel.saveReplyToMessage(id, user_id, reply, avatar);
    console.log(result);
-    const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
+    //const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
 
     if (req.io) {
-      req.io.emit('newReply', updatedMessage);
+      req.io.emit('newReply', result);
     }
 
-    res.status(201).json(updatedMessage);
+    res.status(201).json(result);
   } catch (error) {
     console.error('Error al guardar respuesta:', error);
     res.status(500).json({ error: 'Error al guardar respuesta' });
