@@ -6,11 +6,11 @@ const getUsuarioByEmail = async (email) => {
   return result.rows[0];
 };
 
-const createUsuario = async (name, email, passwordHash) => {
+const createUsuario = async (username, lastname, email, hashedPassword, rol, ) => {
   const query = `
-    INSERT INTO usuarios (username, email, password_hash)
-    VALUES ($1, $2, $3) RETURNING *`;
-  const result = await pool.query(query, [name, email, passwordHash]);
+    INSERT INTO usuarios (username, lastnema, email, password, rol)
+    VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+  const result = await pool.query(query, [username, lastname, email, hashedPassword, rol]);
   return result.rows[0];
 };
 
