@@ -32,14 +32,12 @@ const saveReplyToMessage = async (messageId, userId, reply, avatar) => {
   const values = [messageId, userId, reply];
   const result = await pool.query(query, values);
   
+  // Devuelve el reply con el avatar propagado
   const fullMessage = {
-    user_id: userId,
-    avatar_url: avatar,// 👈 ya lo tienes
-    messages: text,
-    users: sender,
-    
+    ...result.rows[0],
+    avatar_url: avatar
   };
-
+  console.log(fullMessage);
   return fullMessage;
 };
 
@@ -49,7 +47,7 @@ const getMessagesWithReplies = async () => {
      SELECT m.*, u.username AS usuarios
     FROM messages m
     JOIN usuarios u ON m.user_id = u.user_id
-    ORDER BY m.created_at DESC;`;
+    ORDER BY m.created_at DESC; LIMIT 10`;
 
     const repliesQuery = `
       SELECT r.*, u.username AS username
