@@ -25,12 +25,22 @@ const userMessages = async () => {
   return result.rows;
 };
 
-const saveReplyToMessage = async (messageId, userId, reply) => {
+const saveReplyToMessage = async (messageId, userId, reply, avatar) => {
   const query = `
     INSERT INTO message_replies (message_id, user_id, reply)
-    VALUES ($1, $2, $3)`;
+    VALUES ($1, $2, $3) RETURNING *`;
   const values = [messageId, userId, reply];
-  await pool.query(query, values);
+  const result = await pool.query(query, values);
+  
+  const fullMessage = {
+    user_id: userId,
+    avatar_url: avatar,// 👈 ya lo tienes
+    messages: text,
+    users: sender,
+    
+  };
+
+  return fullMessage;
 };
 
 const getMessagesWithReplies = async () => {
