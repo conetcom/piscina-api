@@ -4,7 +4,7 @@ let users = {};
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-    console.log('Usuario conectado');
+   // console.log('Usuario conectado');
 
     // Registro de usuario por ID
     socket.on('register', (userId) => {
@@ -39,7 +39,7 @@ module.exports = (io) => {
           await messagesModel.saveReplyToMessage(id, userId, reply);
       
           const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
-      
+      console.log(updatedMessage);
           io.emit('newReply', updatedMessage);
         } catch (error) {
           console.error('Error al guardar respuesta:', error.message);
@@ -48,7 +48,7 @@ module.exports = (io) => {
       
 
     socket.on('disconnect', () => {
-      console.log('Usuario desconectado');
+     // console.log('Usuario desconectado');
     });
   });
 };
