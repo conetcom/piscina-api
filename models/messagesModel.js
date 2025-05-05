@@ -44,15 +44,24 @@ const saveReplyToMessage = async (messageId, userId, reply, avatar) => {
 const getMessagesWithReplies = async () => {
   try {
     const messagesQuery = `
-     SELECT m.*, u.username AS usuarios
-    FROM messages m
-    JOIN usuarios u ON m.user_id = u.user_id
-    ORDER BY m.created_at DESC LIMIT 10`;
+      SELECT 
+        m.*, 
+        u.username AS username, 
+        u.foto_perfil_url AS avatar_url
+      FROM messages m
+      JOIN usuarios u ON m.user_id = u.user_id
+      ORDER BY m.created_at DESC
+      LIMIT 10
+    `;
 
     const repliesQuery = `
-      SELECT r.*, u.username AS username
-    FROM message_replies r
-    LEFT JOIN usuarios u ON r.user_id = u.user_id;`;
+      SELECT 
+        r.*, 
+        u.username AS username, 
+        u.foto_perfil_url AS avatar_url
+      FROM message_replies r
+      LEFT JOIN usuarios u ON r.user_id = u.user_id
+    `;
 
     const [messagesResult, repliesResult] = await Promise.all([
       pool.query(messagesQuery),
@@ -69,7 +78,7 @@ const getMessagesWithReplies = async () => {
 
     const messagesWithReplies = messagesResult.rows.map((msg) => ({
       ...msg,
-      replies: repliesByMessage[msg.id] || [],  // Asocia las respuestas al mensaje
+      replies: repliesByMessage[msg.id] || [],
     }));
 
     return messagesWithReplies;
@@ -78,6 +87,7 @@ const getMessagesWithReplies = async () => {
     throw new Error('Error al obtener mensajes con respuestas');
   }
 };
+
 
 const getMessageByIdWithReplies = async (id) => {
   try {
