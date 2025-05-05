@@ -33,14 +33,19 @@ module.exports = (io) => {
 
     // Escuchar respuestas
     socket.on('sendReply', async ({ messageId, reply, userId }) => {
-      try {
-        await messagesModel.saveReplyToMessage(messageId, userId, reply);
-        const updatedMessage = await messagesModel.getMessageByIdWithReplies(messageId);
-        io.emit('newReply', updatedMessage); // Emitir mensaje con respuestas actualizadas
-      } catch (error) {
-        console.error('Error al guardar respuesta:', error);
-      }
-    });
+        try {
+          const id = parseInt(messageId); // 👈 forzar a número
+      
+          await messagesModel.saveReplyToMessage(id, userId, reply);
+      
+          const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
+      
+          io.emit('newReply', updatedMessage);
+        } catch (error) {
+          console.error('Error al guardar respuesta:', error.message);
+        }
+      });
+      
 
     socket.on('disconnect', () => {
       console.log('Usuario desconectado');
