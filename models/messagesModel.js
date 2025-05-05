@@ -69,6 +69,8 @@ const getMessagesWithReplies = async () => {
         u.foto_perfil_url AS avatar_url
       FROM message_replies r
       LEFT JOIN usuarios u ON r.user_id = u.user_id
+      ORDER BY m.created_at DESC
+      LIMIT 10
     `;
 
     const [messagesResult, repliesResult] = await Promise.all([
@@ -100,9 +102,23 @@ const getMessagesWithReplies = async () => {
 const getMessageByIdWithReplies = async (id) => {
   try {
     const messageQuery = `
-      SELECT * FROM messages WHERE id = $1`;
+      SELECT 
+        m.*, 
+        u.username AS username, 
+        u.foto_perfil_url AS avatar_url
+      FROM messages m
+      JOIN usuarios u ON m.user_id = u.user_id
+      WHERE m.id = $1`;
+
     const repliesQuery = `
-      SELECT * FROM message_replies WHERE message_id = $1 ORDER BY created_at ASC`;
+      SELECT 
+        r.*, 
+        u.username AS username, 
+        u.foto_perfil_url AS avatar_url
+      FROM message_replies r
+      LEFT JOIN usuarios u ON r.user_id = u.user_id
+      WHERE r.message_id = $1
+      ORDER BY r.created_at ASC`;
 
     const [messageResult, repliesResult] = await Promise.all([
       pool.query(messageQuery, [id]),
@@ -122,6 +138,7 @@ const getMessageByIdWithReplies = async (id) => {
     throw error;
   }
 };
+
 
 module.exports = {
   saveMessages,
