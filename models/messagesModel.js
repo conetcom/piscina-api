@@ -41,12 +41,11 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   `;
   const userResult = await pool.query(userQuery, [userId]);
   const user = userResult.rows[0];
-  console.log(userResult, user)
-
+  
   return {
     ...newReply,
     username: user?.username || null,
-    
+    avatar_url: user?.foto_perfil_url,
   };
 };
 
