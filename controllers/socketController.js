@@ -35,7 +35,7 @@ module.exports = (io) => {
     socket.on('sendReply', async ({ messageId, reply, userId }) => {
         try {
           const id = parseInt(messageId); // 👈 forzar a número
-      
+      console.log(id);
           await messagesModel.saveReplyToMessage(id, userId, reply);
       
           const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
