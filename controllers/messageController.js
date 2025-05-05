@@ -51,7 +51,7 @@ const replyToMessage = async (req, res) => {
       req.io.emit('newReply', updatedMessage);
     }
 
-    res.status(201).json(result);
+    res.status(201).json(updatedMessage);
   } catch (error) {
     console.error('Error al guardar respuesta:', error);
     res.status(500).json({ error: 'Error al guardar respuesta' });

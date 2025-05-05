@@ -26,19 +26,28 @@ const userMessages = async () => {
 };
 
 const saveReplyToMessage = async (messageId, userId, reply) => {
-  const query = `
+  const insertQuery = `
     INSERT INTO message_replies (message_id, user_id, reply)
-    VALUES ($1, $2, $3) RETURNING *`;
-  const values = [messageId, userId, reply];
-  const result = await pool.query(query, values);
-  
-  // Devuelve el reply con el avatar propagado
-  const fullMessage = {
-    ...result.rows[0],
-    avatar_url: avatar
+    VALUES ($1, $2, $3)
+    RETURNING *`;
+  const insertValues = [messageId, userId, reply];
+  const result = await pool.query(insertQuery, insertValues);
+  const newReply = result.rows[0];
+
+  const userQuery = `
+    SELECT username, foto_perfil_url AS avatar_url
+    FROM usuarios
+    WHERE user_id = $1
+  `;
+  const userResult = await pool.query(userQuery, [userId]);
+  const user = userResult.rows[0];
+  console.log(userResult, user)
+
+  return {
+    ...newReply,
+    username: user?.username || null,
+    
   };
-  console.log(fullMessage);
-  return fullMessage;
 };
 
 const getMessagesWithReplies = async () => {
