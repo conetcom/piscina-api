@@ -46,7 +46,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   return {
     ...newReply,
     username: user?.username || null,
-    
+    avatar_url: user?.avatar_url || null,
   };
 };
 
