@@ -22,9 +22,9 @@ module.exports = (io) => {
     });
 
     // Escuchar nuevos mensajes
-    socket.on('sendMessage', async ({ from, content }) => {
+    socket.on('sendMessage', async ({content, user_id }) => {
       try {
-        const newMessage = await messagesModel.saveMessages(content, from);
+        const newMessage = await messagesModel.saveMessages(content, user_id);
         io.emit('newMessage', newMessage); // Emitir a todos los clientes
       } catch (error) {
         console.error('Error al guardar mensaje:', error);

@@ -1,23 +1,32 @@
 const pool = require('./database');
 
-const saveMessages = async (text, sender, user_id, avatar) => {
-  const query = `
-    INSERT INTO messages (messages, users, user_id, avatar_url, created_at)
-    VALUES ($1, $2, $3, $4, NOW()) RETURNING *`;
-  const values = [text, sender, user_id, avatar];
-  const result = await pool.query(query, values);
+const saveMessages = async (content, user_id) => {
+  // 1. Insertar mensaje en la tabla `messages`
+  const insertQuery = `
+    INSERT INTO messages (messages, user_id, created_at)
+    VALUES ($1, $2, NOW()) RETURNING id, messages, user_id, created_at`;
+  const insertValues = [content, user_id];
+  const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
-  // Obtener solo el username del usuario
+  // 2. Consultar al usuario correspondiente
+  const userQuery = `SELECT name AS username, foto_perfil_url AS avatar_url FROM usuarios WHERE id = $1`;
+  const userValues = [user_id];
+  const { rows: [userRow] } = await pool.query(userQuery, userValues);
+
+  // 3. Construir el mensaje completo
   const fullMessage = {
-    user_id,
-    avatar_url: avatar,// 👈 ya lo tienes
-    messages: text,
-    users: sender,
+    id: messageRow.id,
+    messages: messageRow.messages,
+    user_id: messageRow.user_id,
+    created_at: messageRow.created_at,
+    username: userRow.username,
+    avatar_url: userRow.avatar_url,
     replies: [],
   };
 
   return fullMessage;
 };
+
 
 const userMessages = async () => {
   const query = 'SELECT * FROM messages ORDER BY created_at DESC';
@@ -60,7 +69,7 @@ const getMessagesWithReplies = async () => {
       FROM messages m
       JOIN usuarios u ON m.user_id = u.user_id
       ORDER BY m.created_at DESC
-      LIMIT 10
+      LIMIT 5
     `;
 
     const repliesQuery = `
@@ -70,7 +79,9 @@ const getMessagesWithReplies = async () => {
         u.foto_perfil_url AS reply_avatar_url
       FROM message_replies r
       LEFT JOIN usuarios u ON r.user_id = u.user_id
-    `;
+      ORDER BY m.created_at DESC
+      LIMIT 5
+    `
 
     const [messagesResult, repliesResult] = await Promise.all([
       pool.query(messagesQuery),
