@@ -66,8 +66,8 @@ const getMessagesWithReplies = async () => {
     const repliesQuery = `
       SELECT 
         r.*, 
-        u.username AS username, 
-        u.foto_perfil_url AS avatar_url
+        u.username AS reply_username, 
+        u.foto_perfil_url AS reply_avatar_url
       FROM message_replies r
       LEFT JOIN usuarios u ON r.user_id = u.user_id
     `;
@@ -81,12 +81,25 @@ const getMessagesWithReplies = async () => {
       if (!acc[reply.message_id]) {
         acc[reply.message_id] = [];
       }
-      acc[reply.message_id].push(reply);
+      acc[reply.message_id].push({
+        id: reply.id,
+        message_id: reply.message_id,
+        user_id: reply.user_id,
+        reply: reply.reply,
+        created_at: reply.created_at,
+        username: reply.reply_username,
+        avatar_url: reply.reply_avatar_url,
+      });
       return acc;
     }, {});
 
     const messagesWithReplies = messagesResult.rows.map((msg) => ({
-      ...msg,
+      id: msg.id,
+      user_id: msg.user_id,
+      messages: msg.messages,
+      created_at: msg.created_at,
+      username: msg.username,
+      avatar_url: msg.avatar_url,
       replies: repliesByMessage[msg.id] || [],
     }));
 
@@ -96,6 +109,7 @@ const getMessagesWithReplies = async () => {
     throw new Error('Error al obtener mensajes con respuestas');
   }
 };
+
 
 
 const getMessageByIdWithReplies = async (id) => {
