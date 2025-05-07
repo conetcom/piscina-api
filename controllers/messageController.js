@@ -22,7 +22,7 @@ const createMessage = async (req, res) => {
   try {
     const result = await messagesModel.saveMessages(text, user_id);
     const newMessage = result;
-
+console.log('pasopor qui');
     if (req.io) {
       req.io.emit('newMessage', newMessage);
     }
