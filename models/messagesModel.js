@@ -9,7 +9,7 @@ const saveMessages = async (content, user_id) => {
   const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
   // 2. Consultar al usuario correspondiente
-  const userQuery = `SELECT username, foto_perfil_url AS avatar_url FROM usuarios WHERE id = $1`;
+  const userQuery = `SELECT username, foto_perfil_url AS avatar_url FROM usuarios WHERE user_id = $1`;
   const userValues = [user_id];
   const { rows: [userRow] } = await pool.query(userQuery, userValues);
 
