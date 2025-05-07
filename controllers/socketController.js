@@ -22,8 +22,9 @@ module.exports = (io) => {
     });
 
     // Escuchar nuevos mensajes
-    socket.on('sendMessage', async ({content, user_id }) => {
+    socket.on('sendMessage', async ({content, userId }) => {
       try {
+        const user_id = parseInt(userId); // 👈 forzar a número
         const newMessage = await messagesModel.saveMessages(content, user_id);
         io.emit('newMessage', newMessage); // Emitir a todos los clientes
       } catch (error) {
