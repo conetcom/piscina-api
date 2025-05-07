@@ -61,10 +61,11 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
 
 const getMessagesWithReplies = async () => {
   try {
+    // Paso 1: Obtener los últimos 5 mensajes con datos del usuario
     const messagesQuery = `
       SELECT 
         m.*, 
-        u.username AS username, 
+        u.username, 
         u.foto_perfil_url AS avatar_url
       FROM messages m
       JOIN usuarios u ON m.user_id = u.user_id
@@ -72,6 +73,15 @@ const getMessagesWithReplies = async () => {
       LIMIT 5
     `;
 
+    const messagesResult = await pool.query(messagesQuery);
+    const messages = messagesResult.rows;
+
+    // Obtener solo los IDs de esos 5 mensajes
+    const messageIds = messages.map(m => m.id);
+
+    if (messageIds.length === 0) return [];
+
+    // Paso 2: Obtener las replies SOLO de esos mensajes
     const repliesQuery = `
       SELECT 
         r.*, 
@@ -79,19 +89,14 @@ const getMessagesWithReplies = async () => {
         u.foto_perfil_url AS reply_avatar_url
       FROM message_replies r
       LEFT JOIN usuarios u ON r.user_id = u.user_id
-      ORDER BY m.created_at DESC
-      LIMIT 5
-    `
+      WHERE r.message_id = ANY($1)
+      ORDER BY r.created_at ASC
+    `;
+    const repliesResult = await pool.query(repliesQuery, [messageIds]);
 
-    const [messagesResult, repliesResult] = await Promise.all([
-      pool.query(messagesQuery),
-      pool.query(repliesQuery),
-    ]);
-
+    // Organizar las replies por message_id
     const repliesByMessage = repliesResult.rows.reduce((acc, reply) => {
-      if (!acc[reply.message_id]) {
-        acc[reply.message_id] = [];
-      }
+      if (!acc[reply.message_id]) acc[reply.message_id] = [];
       acc[reply.message_id].push({
         id: reply.id,
         message_id: reply.message_id,
@@ -104,7 +109,8 @@ const getMessagesWithReplies = async () => {
       return acc;
     }, {});
 
-    const messagesWithReplies = messagesResult.rows.map((msg) => ({
+    // Paso 3: Unir los mensajes con sus replies
+    const messagesWithReplies = messages.map(msg => ({
       id: msg.id,
       user_id: msg.user_id,
       messages: msg.messages,
@@ -120,6 +126,7 @@ const getMessagesWithReplies = async () => {
     throw new Error('Error al obtener mensajes con respuestas');
   }
 };
+
 
 
 
