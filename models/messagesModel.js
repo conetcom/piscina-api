@@ -6,7 +6,7 @@ const saveMessages = async (content, user_id) => {
     INSERT INTO messages (messages, user_id, created_at)
     VALUES ($1, $2, NOW()) RETURNING id, messages, user_id, created_at`;
   const insertValues = [content, user_id];
-   const result = await pool.query(insertQuery, [user_id, messages]);
+   const result = await pool.query(insertQuery, insertValues);
     return result.rows[0];
   };
   
