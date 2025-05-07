@@ -41,8 +41,10 @@ module.exports = (io) => {
           const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
           const newReply = updatedMessage.replies[updatedMessage.replies.length - 1];
 
-      console.log(updatedMessage);
-          io.emit('newReply', newReply);
+      console.log(newReply);
+          io.emit('newReply', newReply
+            
+          );
         } catch (error) {
           console.error('Error al guardar respuesta:', error.message);
         }

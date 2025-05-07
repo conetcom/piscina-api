@@ -6,14 +6,13 @@ const saveMessages = async (content, user_id) => {
     INSERT INTO messages (messages, user_id, created_at)
     VALUES ($1, $2, NOW()) RETURNING id, messages, user_id, created_at`;
   const insertValues = [content, user_id];
-   const result = await pool.query(insertQuery, insertValues);
-    return result.rows[0];
-  };
-  
   const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
   // 2. Consultar al usuario correspondiente
-  const userQuery = `SELECT username, foto_perfil_url AS avatar_url FROM usuarios WHERE user_id = $1`;
+  const userQuery = `
+    SELECT username, foto_perfil_url AS avatar_url
+    FROM usuarios
+    WHERE user_id = $1`;
   const userValues = [user_id];
   const { rows: [userRow] } = await pool.query(userQuery, userValues);
 
@@ -23,14 +22,13 @@ const saveMessages = async (content, user_id) => {
     messages: messageRow.messages,
     user_id: messageRow.user_id,
     created_at: messageRow.created_at,
-    username: userRow.username,
-    avatar_url: userRow.avatar_url,
+    username: userRow?.username || null,
+    avatar_url: userRow?.avatar_url || null,
     replies: [],
   };
 
   return fullMessage;
 };
-
 
 const userMessages = async () => {
   const query = 'SELECT * FROM messages ORDER BY created_at DESC';
