@@ -4,56 +4,44 @@ let users = {};
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-   // console.log('Usuario conectado');
-
-    // Registro de usuario por ID
     socket.on('register', (userId) => {
       users[userId] = socket.id;
     });
 
-    // Enviar mensajes anteriores desde la base de datos
-    socket.on('requestPreviousMessages', async () => {
+    // Obtener todos los mensajes
+    socket.on('getAllMessages', async () => {
       try {
         const messages = await messagesModel.getMessagesWithReplies();
-        socket.emit('previousMessages', messages);
+        socket.emit('allMessages', messages);
       } catch (error) {
         console.error('Error al obtener mensajes previos:', error);
       }
     });
 
-    // Escuchar nuevos mensajes
-    socket.on('sendMessage', async ({content, user_id }) => {
+    // Nuevo mensaje
+    socket.on('sendMessage', async ({ user_id, content, name, avatar }) => {
       try {
-       // const user_id = parseInt(userId); // 👈 forzar a número
-        const newMessage = await messagesModel.saveMessages(content, user_id);
-        io.emit('newMessage', newMessage); // Emitir a todos los clientes
+        const newMessage = await messagesModel.saveMessages(user_id, content, name, avatar);
+        io.emit('newMessage', newMessage);
       } catch (error) {
         console.error('Error al guardar mensaje:', error);
       }
     });
 
-    // Escuchar respuestas
-    socket.on('sendReply', async ({ messageId, reply, userId }) => {
-        try {
-          const id = parseInt(messageId); // 👈 forzar a número
-      console.log(id);
-          await messagesModel.saveReplyToMessage(id, userId, reply);
-      
-          const updatedMessage = await messagesModel.getMessageByIdWithReplies(id);
-          const newReply = updatedMessage.replies[updatedMessage.replies.length - 1];
-
-      console.log(newReply);
-          io.emit('newReply', newReply
-            
-          );
-        } catch (error) {
-          console.error('Error al guardar respuesta:', error.message);
-        }
-      });
-      
+    // Respuesta a un mensaje
+    socket.on('sendReply', async ({ messageId, reply, userId, name, avatar }) => {
+      try {
+        const newReply = await messagesModel.saveReplyToMessage(messageId, reply, userId,  name, avatar);
+        const updatedMessages = await messagesModel.getMessagesWithReplies();
+        io.emit('newReply', updatedMessages.find(m => m.id === messageId));
+      } catch (error) {
+        console.error('Error al guardar respuesta:', error.message);
+      }
+    });
+    
 
     socket.on('disconnect', () => {
-     // console.log('Usuario desconectado');
+      // Usuario desconectado
     });
   });
 };
