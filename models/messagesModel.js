@@ -1,10 +1,10 @@
 const pool = require('./database');
 
-const saveMessages = async (user_id, content,  username, avatar_url) => {
+const saveMessages = async (content, user_id, username, avatar_url) => {
   const insertQuery = `
-    INSERT INTO messages (messages, user_id)
-    VALUES ($1, $2)
-    RETURNING *`;
+    INSERT INTO messages (messages, user_id, created_at)
+    VALUES ($1, $2, NOW())
+    RETURNING id, messages, user_id, created_at`;
   const insertValues = [content, user_id];
   const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
@@ -23,7 +23,7 @@ const saveMessages = async (user_id, content,  username, avatar_url) => {
 
 const saveReplyToMessage = async (messageId, userId, reply) => {
   const insertQuery = `
-    INSERT INTO message_replies (message_id, user_id, reply)
+    INSERT INTO message_replies (message_id, user_id, reply, created_at)
     VALUES ($1, $2, $3)
     RETURNING *`;
   const result = await pool.query(insertQuery, [messageId, userId, reply]);
@@ -42,6 +42,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
     avatar_url: user?.avatar_url || null,
   };
 };
+
 
 const getMessagesWithReplies = async () => {
   const messagesQuery = `

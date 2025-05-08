@@ -31,13 +31,14 @@ module.exports = (io) => {
     // Respuesta a un mensaje
     socket.on('sendReply', async ({ messageId, reply, userId, name, avatar }) => {
       try {
-        const newReply = await messagesModel.saveReplyToMessage(messageId, reply, userId,  name, avatar);
+        const newReply = await messagesModel.saveReplyToMessage(messageId, userId, reply, name, avatar);
         const updatedMessages = await messagesModel.getMessagesWithReplies();
         io.emit('newReply', updatedMessages.find(m => m.id === messageId));
       } catch (error) {
         console.error('Error al guardar respuesta:', error.message);
       }
     });
+    
     
 
     socket.on('disconnect', () => {
