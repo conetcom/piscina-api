@@ -4,7 +4,7 @@ const saveMessages = async (content, user_id, username, avatar_url) => {
   const insertQuery = `
     INSERT INTO messages (messages, user_id)
     VALUES ($1, $2)
-    RETURNING *`;
+    RETURNING id, messages, user_id, created_at`;
   const insertValues = [content, user_id];
   const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
@@ -25,7 +25,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const insertQuery = `
     INSERT INTO message_replies (message_id, user_id, reply)
     VALUES ($1, $2, $3)
-    RETURNING message_id, user_id, reply, created_at`;
+    RETURNING *`;
   const result = await pool.query(insertQuery, [messageId, userId, reply]);
   const newReply = result.rows[0];
 
@@ -37,15 +37,11 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const user = userResult.rows[0];
 
   return {
-    id: newReply.id,
-    user_id: newReply.user_id,
-    reply: newReply.reply,
-    created_ad: newReply.created_at,
+    ...newReply,
     username: user?.username || null,
     avatar_url: user?.avatar_url || null,
   };
 };
-
 
 const getMessagesWithReplies = async () => {
   const messagesQuery = `

@@ -19,9 +19,9 @@ module.exports = (io) => {
     });
 
     // Nuevo mensaje
-    socket.on('sendMessage', async ({ user_id, content, name, avatar }) => {
+    socket.on('sendMessage', async ({ content, user_id, name, avatar }) => {
       try {
-        const newMessage = await messagesModel.saveMessages(user_id, content, name, avatar);
+        const newMessage = await messagesModel.saveMessages(content, user_id, name, avatar);
         io.emit('newMessage', newMessage);
       } catch (error) {
         console.error('Error al guardar mensaje:', error);
@@ -29,17 +29,15 @@ module.exports = (io) => {
     });
 
     // Respuesta a un mensaje
-    socket.on('sendReply', async ({ messageId, reply, userId, name, avatar }) => {
+    socket.on('sendReply', async ({ messageId, reply, userId }) => {
       try {
-        const newReply = await messagesModel.saveReplyToMessage(messageId, userId, reply, name, avatar);
+        const newReply = await messagesModel.saveReplyToMessage(messageId, userId, reply);
         const updatedMessages = await messagesModel.getMessagesWithReplies();
         io.emit('newReply', updatedMessages.find(m => m.id === messageId));
       } catch (error) {
         console.error('Error al guardar respuesta:', error.message);
       }
     });
-    
-    
 
     socket.on('disconnect', () => {
       // Usuario desconectado
