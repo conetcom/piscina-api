@@ -87,7 +87,7 @@ const getMessagesWithReplies = async () => {
   return messages.map(msg => ({
     id: msg.id,
     user_id: msg.user_id,
-    messages: msg.messages,
+    message: msg.messages,
     created_at: msg.created_at,
     username: msg.username,
     avatar_url: msg.avatar_url,
