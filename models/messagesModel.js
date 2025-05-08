@@ -25,7 +25,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const insertQuery = `
     INSERT INTO message_replies (message_id, user_id, reply)
     VALUES ($1, $2, $3)
-    RETURNING *`;
+    RETURNING message_id, user_id, reply, created_ad`;
   const result = await pool.query(insertQuery, [messageId, userId, reply]);
   const newReply = result.rows[0];
 
@@ -37,7 +37,10 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const user = userResult.rows[0];
 
   return {
-    ...newReply,
+    id: newReply.id,
+    user_id: newReply.user_id,
+    reply: newReply.reply,
+    created_ad: newReply.created_ad,
     username: user?.username || null,
     avatar_url: user?.avatar_url || null,
   };
