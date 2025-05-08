@@ -23,7 +23,7 @@ const saveMessages = async (content, user_id, username, avatar_url) => {
 
 const saveReplyToMessage = async (messageId, userId, reply) => {
   const insertQuery = `
-    INSERT INTO message_replies (message_id, user_id, reply, created_at)
+    INSERT INTO message_replies (message_id, user_id, reply)
     VALUES ($1, $2, $3)
     RETURNING *`;
   const result = await pool.query(insertQuery, [messageId, userId, reply]);
