@@ -76,7 +76,7 @@ const getMessagesWithReplies = async () => {
       id: reply.id,
       message_id: reply.message_id,
       user_id: reply.user_id,
-      messages: reply.reply,
+      reply: reply.reply,
       created_at: reply.created_at,
       username: reply.reply_username,
       avatar_url: reply.reply_avatar_url,
