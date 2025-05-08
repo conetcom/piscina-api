@@ -30,7 +30,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const newReply = result.rows[0];
 
   const userQuery = `
-    SELECT username, profileImage AS avatar_url
+    SELECT username, foto_perfil_url AS avatar_url
     FROM usuarios
     WHERE id = $1`;
   const userResult = await pool.query(userQuery, [userId]);
