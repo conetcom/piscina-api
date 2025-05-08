@@ -40,7 +40,7 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
     id: newReply.id,
     user_id: newReply.user_id,
     reply: newReply.reply,
-    created_ad: newReply.created_ad,
+    created_ad: newReply.created_at,
     username: user?.username || null,
     avatar_url: user?.avatar_url || null,
   };
