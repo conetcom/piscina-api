@@ -8,8 +8,7 @@ const saveMessages = async (content, user_id, username, avatar_url) => {
   const insertValues = [content, user_id];
   const { rows: [messageRow] } = await pool.query(insertQuery, insertValues);
 
-  const fullMessage = {
-    type: message,
+  const fullMessage = {    
     id: messageRow.id,
     messages: messageRow.messages,
     user_id: messageRow.user_id,
@@ -38,7 +37,6 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
   const user = userResult.rows[0];
 
   return {
-    type: reply,
     ...newReply,
     username: user?.username || null,
     avatar_url: user?.avatar_url || null,
@@ -75,7 +73,6 @@ const getMessagesWithReplies = async () => {
   const repliesByMessage = repliesResult.rows.reduce((acc, reply) => {
     if (!acc[reply.message_id]) acc[reply.message_id] = [];
     acc[reply.message_id].push({
-      type: reply,
       id: reply.id,
       message_id: reply.message_id,
       user_id: reply.user_id,
@@ -88,7 +85,7 @@ const getMessagesWithReplies = async () => {
   }, {});
 
   return messages.map(msg => ({
-    type: message,
+    
     id: msg.id,
     user_id: msg.user_id,
     messages: msg.messages,
