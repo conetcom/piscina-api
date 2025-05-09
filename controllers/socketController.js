@@ -7,6 +7,17 @@ module.exports = (io) => {
     socket.on('register', (userId) => {
       users[userId] = socket.id;
     });
+  //verificar mensajes leidos    
+      socket.on('markMessageAsRead', async ({ messageId }) => {
+        try {
+          await mensajesModel.makeMessageAsRead(messageId);
+          console.log(`Mensaje ${messageId} marcado como leído`);
+        } catch (err) {
+          console.error('Error marcando como leído:', err);
+        }
+      });
+    });
+    
 
     // Obtener todos los mensajes
     socket.on('getAllMessages', async () => {
