@@ -47,9 +47,9 @@ module.exports = (io) => {
     });
 
     // ✅ Nueva respuesta
-    socket.on('sendReply', async ({ messageId, reply, userId }) => {
+    socket.on('sendReply', async ({ messageId, reply, userId, name, avatar }) => {
       try {
-        const newReply = await messagesModel.saveReplyToMessage(messageId, userId, reply);
+        const newReply = await messagesModel.saveReplyToMessage(messageId, userId, reply, name, avatar);
 
         const updatedMessages = await messagesModel.getMessagesWithReplies();
         const targetMessage = updatedMessages.find(m => m.id === messageId);

@@ -21,7 +21,7 @@ const saveMessages = async (content, user_id, username, avatar_url) => {
   return fullMessage;
 };
 
-const saveReplyToMessage = async (messageId, userId, reply) => {
+const saveReplyToMessage = async (messageId, userId, reply, username, avatar_url) => {
   const insertQuery = `
     INSERT INTO message_replies (message_id, user_id, reply)
     VALUES ($1, $2, $3)
@@ -38,8 +38,8 @@ const saveReplyToMessage = async (messageId, userId, reply) => {
 
   return {
     ...newReply,
-    username: user?.username || null,
-    avatar_url: user?.avatar_url || null,
+    username,
+    avatar_url,
   };
 };
 
