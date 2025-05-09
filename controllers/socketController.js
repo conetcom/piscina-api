@@ -16,7 +16,7 @@ module.exports = (io) => {
           console.error('Error marcando como leído:', err);
         }
       });
-    });
+    
     
 
     // Obtener todos los mensajes
