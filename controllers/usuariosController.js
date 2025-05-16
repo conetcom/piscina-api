@@ -9,7 +9,7 @@ registrarUsuario = async (req, res) => {
 
         // Verificar si el usuario ya existe
         const usuarioExistente = await usuariosModel.getUsuarioByEmail(email);
-        console.log(usuarioExistente);
+    
         if (usuarioExistente) {
             return res.status(400).json({
                 success: false,
