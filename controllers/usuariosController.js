@@ -29,7 +29,7 @@ registrarUsuario = async (req, res) => {
 
         // Generar el token JWT
         const token = jwt.sign(          
-            { id: newUser.user_id, email: newUser.email, role: user.rol},
+            { id: newUser.user_id, email: newUser.email, role: newUser.rol},
             process.env.JWT_SECRET, // Clave secreta desde variables de entorno
             { expiresIn: '24h' } // Expiración del token
         );
