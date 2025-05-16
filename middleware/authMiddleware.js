@@ -7,11 +7,10 @@ const authMiddleware = (req, res, next) => {
 
     try {
         const verificado = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
-        req.usuario = verificado;
+        req.usuario = verificado; // El payload del token se guarda aquí
         next();
     } catch (err) {
         res.status(400).json({ mensaje: 'Token no válido' });
     }
 };
-
 module.exports = authMiddleware;

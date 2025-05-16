@@ -28,8 +28,8 @@ registrarUsuario = async (req, res) => {
         }
 
         // Generar el token JWT
-        const token = jwt.sign(
-            { id: newUser.user_id, email: newUser.email},
+        const token = jwt.sign(          
+            { id: newUser.user_id, email: newUser.email, role: user.rol},
             process.env.JWT_SECRET, // Clave secreta desde variables de entorno
             { expiresIn: '24h' } // Expiración del token
         );
@@ -45,7 +45,7 @@ registrarUsuario = async (req, res) => {
                 name: newUser.username,
                 lastname: newUser.lastname,
                 email: newUser.email,
-                rol: newUser.rol,
+                role: newUser.rol,
                 userbio: newUser.userbio,
                 profileImage: newUser.foto_perfil_url 
               },        
@@ -84,7 +84,7 @@ loginUsuario = async (req, res) => {
     }
 
     // Generar JWT
-    const token = jwt.sign({ id: user.user_id, email: user.email }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.user_id, email: user.email, role: user.rol }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 
@@ -98,7 +98,7 @@ loginUsuario = async (req, res) => {
           name: user.username,
           lastname: user.lastname,
           email: user.email,
-          rol: user.rol,
+          role: user.rol,
           userbio: user.userbio,
           profileImage: user.foto_perfil_url 
         },        
@@ -132,7 +132,7 @@ usuarioUpdate = async (req, res) => {
             name: user.username,
             lastname: user.lastname,
             email: user.email,
-            rol: user.rol,
+            role: user.rol,
             userbio: user.userbio,
             profileImage: user.foto_perfil_url 
           }     
