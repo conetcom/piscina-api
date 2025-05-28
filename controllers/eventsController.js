@@ -31,6 +31,7 @@ const updateEvent = async (req, res) => {
 const deleteEvent = async (req, res) => {
   try {
     await eventsModel.deleteEvent(req.params.id);
+    console.log(req.params.id);
     res.status(204).end();
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar evento' });
