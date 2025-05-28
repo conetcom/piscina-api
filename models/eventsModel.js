@@ -6,14 +6,19 @@ const getAllEvents = async () => {
 };
 
 const createEvent = async (event) => {
-  const { title, start, fin, category } = event;
-  console.log (title);
-  const result = await db.query(
-    'INSERT INTO events (title, start, fin, category) VALUES ($1, $2, $3, $4) RETURNING *',
-    [title, start, fin, category]
-  );
-  return result.rows[0];
+  const { title, start, fin, className } = event;
+  try {
+    const result = await db.query(
+      'INSERT INTO events (title, start, fin, category) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, start, fin, className]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error al insertar evento:", error);
+    throw error;
+  }
 };
+
 
 const updateEvent = async (id, event) => {
   const { title, start, fin, category} = event;
