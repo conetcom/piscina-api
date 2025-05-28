@@ -6,19 +6,19 @@ const getAllEvents = async () => {
 };
 
 const createEvent = async (event) => {
-  const { title, start, end, category } = event;
+  const { title, start, fin, category } = event;
   const result = await db.query(
-    'INSERT INTO events (title, start, end, category) VALUES ($1, $2, $3, $4) RETURNING *',
-    [title, start, end, category]
+    'INSERT INTO events (title, start, fin, category) VALUES ($1, $2, $3, $4) RETURNING *',
+    [title, start, fin, category]
   );
   return result.rows[0];
 };
 
 const updateEvent = async (id, event) => {
-  const { title, start, end, category} = event;
+  const { title, start, fin, category} = event;
   const result = await db.query(
-    'UPDATE events SET title = $1, start = $2, end = $3, 4 = category WHERE id = $5 RETURNING *',
-    [title, start, end, category, id]
+    'UPDATE events SET title = $1, start = $2, fin = $3, 4 = category WHERE id = $5 RETURNING *',
+    [title, start, fin, category, id]
   );
   return result.rows[0];
 };
