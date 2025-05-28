@@ -10,8 +10,6 @@ const getEvents = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-    const data = req.body;
-    console.log(data);
   try {
     const newEvent = await eventsModel.createEvent(req.body);
     

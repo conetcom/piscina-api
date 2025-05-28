@@ -7,6 +7,7 @@ const getAllEvents = async () => {
 
 const createEvent = async (event) => {
   const { title, start, fin, category } = event;
+  console.log (event);
   const result = await db.query(
     'INSERT INTO events (title, start, fin, category) VALUES ($1, $2, $3, $4) RETURNING *',
     [title, start, fin, category]
