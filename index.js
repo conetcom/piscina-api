@@ -13,7 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const clientRoutes = require('./routes/clientroutes');
 const messageRoutes = require('./routes/messageRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
-
+const eventsRoutes = require('./routes/eventsRoutes');
 // Configuración de CORS
 
 const corsConfig = require('./config/corsConfig');
@@ -45,6 +45,8 @@ app.use('/api', (req, res, next) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api/events', eventsRoutes);
+
 
 // Iniciar el servido
 const PORT = process.env.PORT || 5001;
