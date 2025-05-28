@@ -10,9 +10,11 @@ const getEvents = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
+    const data = req.body;
+    console.log(data);
   try {
     const newEvent = await eventsModel.createEvent(req.body);
-    console.log(newEvent);
+    
     res.status(201).json(newEvent);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear evento' });
