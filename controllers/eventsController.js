@@ -30,13 +30,20 @@ const updateEvent = async (req, res) => {
 
 const deleteEvent = async (req, res) => {
   try {
-    await eventsModel.deleteEvent(req.params.id);
-    console.log(req.params.id);
-    res.status(204).end();
+    const deleted = await eventsModel.deleteEvent(Number(req.params.id));
+
+    if (deleted) {
+      console.log('Evento eliminado:', req.params.id);
+      res.status(204).end(); // No Content
+    } else {
+      res.status(404).json({ error: 'Evento no encontrado' });
+    }
   } catch (error) {
+    console.error('Error al eliminar evento:', error);
     res.status(500).json({ error: 'Error al eliminar evento' });
   }
 };
+
 
 module.exports = {
   getEvents,
