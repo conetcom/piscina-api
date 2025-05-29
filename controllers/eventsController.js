@@ -30,27 +30,13 @@ const updateEvent = async (req, res) => {
 
 const deleteEvent = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'ID inválido' });
-    }
-
-    const deleted = await eventsModel.deleteEvent(id);
-
-    if (deleted) {
-      console.log('Evento eliminado:', id);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ error: 'Evento no encontrado' });
-    }
+    await eventsModel.deleteEvent(req.params.id);
+    console.log(req.params.id);
+    res.status(204).end();
   } catch (error) {
-    console.error('Error al eliminar evento:', error);
     res.status(500).json({ error: 'Error al eliminar evento' });
   }
 };
-
-
 
 module.exports = {
   getEvents,
