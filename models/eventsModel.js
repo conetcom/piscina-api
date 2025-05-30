@@ -12,27 +12,16 @@ const getAllEvents = async (userId) => {
   return result.rows;
 };
 
-module.exports = {
-  getAllEvents,
-};
+const createEvent = async (eventData, userId) => {
+  const { title, start, fin, className } = eventData;
+  const category = className;
+console.log('estos son los datos',eventData, userId);
+  const result = await db.query(
+    'INSERT INTO events (title, start, fin, category, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [title, start, fin, category, userId]
+  );
 
-
-
-
-const createEvent = async (req, res) => {
-  const userId = req.user.id; // desde el token
-  const { title, start, fin, className } = req.body;
-  const category = className; // 👈 renombramos para que coincida con el campo de la BD
-
-  try {
-    const result = await db.query(
-      'INSERT INTO events (title, start, fin, category, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [title, start, fin, category, userId]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Error al crear evento" });
-  }
+  return result.rows[0];
 };
 
 const updateEvent = async (id, event) => {

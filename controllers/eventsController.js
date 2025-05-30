@@ -13,8 +13,9 @@ const getEvents = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
+   const userId = req.user?.id; // Usa req.user.id si viene del middleware
   try {
-    const newEvent = await eventsModel.createEvent(req.body);
+    const newEvent = await eventsModel.createEvent(req.body, userId);
     
     res.status(201).json(newEvent);
   } catch (error) {
