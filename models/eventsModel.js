@@ -1,23 +1,21 @@
 const db = require('./database'); // Ajusta esto a tu instancia de conexión
 
-const getAllEvents = async (req, res) => {
-  const userId = req.userId;
-console.log('este es el codigo de usuario' , userId);
-  if (!userId) {
-    return res.status(401).json({ error: "No autorizado: ID de usuario no disponible" });
-  }
 
-  try {
-    const result = await db.query(
-      'SELECT * FROM events WHERE user_id = $1 ORDER BY start',
-      [userId]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Error al obtener eventos:", err);
-    res.status(500).json({ error: "Error al obtener eventos" });
-  }
+const getAllEvents = async (userId) => {
+  console.log("Desde el modelo, userId recibido:", userId); // <- Aquí se vuelve undefined?
+  if (!userId) throw new Error("userId no proporcionado al modelo");
+
+  const result = await db.query(
+    'SELECT * FROM events WHERE user_id = $1 ORDER BY start',
+    [userId]
+  );
+  return result.rows;
 };
+
+module.exports = {
+  getAllEvents,
+};
+
 
 
 
