@@ -29,7 +29,7 @@ const createEvent = async (req, res) => {
   try {
     const result = await db.query(
       'INSERT INTO events (title, start, fin, category, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [title, start, fin, className, userId]
+      [title, start, fin, category, userId]
     );
     res.json(result.rows[0]);
   } catch (err) {

@@ -2,10 +2,10 @@ const eventsModel = require('../models/eventsModel');
 
 const getEvents = async (req, res) => {
   const userId = req.user?.id; // Usa req.user.id si viene del middleware
-  console.log('eventscontroller', userId);
+ 
   try {
        
-    const events = await eventsModel.getEventsByUserId(userId);
+    const events = await eventsModel.getAllEvents(userId);
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener eventos' });
