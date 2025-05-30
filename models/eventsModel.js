@@ -22,7 +22,7 @@ const createEvent = async (event) => {
 const updateEvent = async (id, event) => {
   const { title, start, fin, className} = event;
   const result = await db.query(
-    'UPDATE events SET title = $1, start = $2, fin = $3, 4 = category WHERE id = $5 RETURNING *',
+    'UPDATE events SET title = $1, start = $2, fin = $3, category = 4 WHERE id = $5 RETURNING *',
     [title, start, fin, className, id]
   );
   return result.rows[0];
