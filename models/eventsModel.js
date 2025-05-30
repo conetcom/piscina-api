@@ -1,21 +1,30 @@
 const db = require('./database'); // Ajusta esto a tu instancia de conexión
 
-const getAllEvents = async () => {
-  const result = await db.query('SELECT * FROM events ORDER BY start');
-  return result.rows;
+const getAllEvents = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const result = await db.query(
+      'SELECT * FROM events WHERE user_id = $1  ORDER BY start',
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: "Error al obtener eventos" });
+  }
 };
 
-const createEvent = async (event) => {
-  const { title, start, fin, className } = event;
+const createEvent = async (req, res) => {
+  const { title, start, fin, className } = req.body;
+  const userId = req.userId;
+
   try {
     const result = await db.query(
-      'INSERT INTO events (title, start, fin, category) VALUES ($1, $2, $3, $4) RETURNING *',
-      [title, start, fin, className]
+      'INSERT INTO events (title, start, fin, className, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [title, start, fin, className, userId]
     );
-    return result.rows[0];
-  } catch (error) {
-    console.error("Error al insertar evento:", error);
-    throw error;
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: "Error al crear evento" });
   }
 };
 

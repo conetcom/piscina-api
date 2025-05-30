@@ -2,15 +2,22 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization');
-    if (!token) return res.status(401).json({ mensaje: 'Acceso denegado' });
+  const authHeader = req.headers.authorization;
 
-    try {
-        const verificado = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
-        req.usuario = verificado; // El payload del token se guarda aquí
-        next();
-    } catch (err) {
-        res.status(400).json({ mensaje: 'Token no válido' });
-    }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Token no proporcionado" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id; // Aquí asumimos que guardaste el id como 'id' al firmar el token
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token inválido" });
+  }
 };
+
+
 module.exports = authMiddleware;
