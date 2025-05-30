@@ -20,6 +20,7 @@ const createEvent = async (req, res) => {
 };
 
 const updateEvent = async (req, res) => {
+  console.log(req.params.id, req.body);
   try {
     const updatedEvent = await eventsModel.updateEvent(req.params.id, req.body);
     res.json(updatedEvent);
@@ -30,13 +31,19 @@ const updateEvent = async (req, res) => {
 
 const deleteEvent = async (req, res) => {
   try {
-    await eventsModel.deleteEvent(req.params.id);
-    console.log(req.params.id);
-    res.status(204).end();
+    const id = parseInt(req.params.id, 10); // convierte a entero seguro
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
+    await eventsModel.deleteEvent(id);
+    res.status(204).end(); // Eliminado con éxito
   } catch (error) {
+    console.error('Error al eliminar evento:', error);
     res.status(500).json({ error: 'Error al eliminar evento' });
   }
 };
+
 
 module.exports = {
   getEvents,
