@@ -1,7 +1,7 @@
 const db = require('./database'); // Ajusta esto a tu instancia de conexión
 
 const getAllEvents = async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.userId;
 console.log('este es el codigo de usuario' , userId);
   if (!userId) {
     return res.status(401).json({ error: "No autorizado: ID de usuario no disponible" });
