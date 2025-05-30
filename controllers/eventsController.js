@@ -22,7 +22,7 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
    try {
      const id = parseInt(req.params.id, 10); // convierte a entero seguro
-     console.log(id);
+     console.log(id, req.body);
     const updatedEvent = await eventsModel.updateEvent(id, req.body);
     res.json(updatedEvent);
   } catch (error) {
