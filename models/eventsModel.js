@@ -14,12 +14,13 @@ const getAllEvents = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
+  const userId = req.user.id; // desde el token
   const { title, start, fin, className } = req.body;
-  const userId = req.userId;
+  
 
   try {
     const result = await db.query(
-      'INSERT INTO events (title, start, fin, className, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      'INSERT INTO events (title, start, fin, category, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [title, start, fin, className, userId]
     );
     res.json(result.rows[0]);

@@ -2,7 +2,8 @@ const eventsModel = require('../models/eventsModel');
 
 const getEvents = async (req, res) => {
   try {
-    const events = await eventsModel.getAllEvents();
+        const userId = req.user.id; // <-- lo extrae del token
+    const events = await eventsModel.getEventsByUserId(userId);
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener eventos' });
