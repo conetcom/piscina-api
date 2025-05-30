@@ -12,12 +12,12 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; // Aquí asumimos que guardaste el id como 'id' al firmar el token
+    req.user = { id: decoded.id }; // ✅ más estándar y fácil de usar luego
+    console.log("ID extraído del token:", req.user.id);
     next();
   } catch (error) {
     return res.status(401).json({ message: "Token inválido" });
   }
 };
-
 
 module.exports = authMiddleware;
