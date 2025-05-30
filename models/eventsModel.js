@@ -1,8 +1,11 @@
 const db = require('./database'); // Ajusta esto a tu instancia de conexión
 
 const getAllEvents = async (req, res) => {
-  const userId = req.user?.id; // Usa req.user.id si viene del middleware
-  console.log("User ID desde el token:", userId);
+  const userId = req.user?.id;
+console.log('este es el codigo de usuario' , userId);
+  if (!userId) {
+    return res.status(401).json({ error: "No autorizado: ID de usuario no disponible" });
+  }
 
   try {
     const result = await db.query(
@@ -15,6 +18,7 @@ const getAllEvents = async (req, res) => {
     res.status(500).json({ error: "Error al obtener eventos" });
   }
 };
+
 
 
 const createEvent = async (req, res) => {

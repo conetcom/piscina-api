@@ -2,8 +2,6 @@ const eventsModel = require('../models/eventsModel');
 
 const getEvents = async (req, res) => {
   const userId = req.user?.id; // Usa req.user.id si viene del middleware
-  console.log("User ID desde el token:", userId);
-
   try {
        
     const events = await eventsModel.getEventsByUserId(userId);
