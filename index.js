@@ -45,11 +45,6 @@ app.use('/api', (req, res, next) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api', uploadRoutes);
-router.use((req, res, next) => {
-  console.log(`[${req.method}] ${req.originalUrl}`);
-  next();
-});
-
 app.use('/api/events', eventsRoutes);
 
 
