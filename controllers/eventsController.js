@@ -20,7 +20,8 @@ const createEvent = async (req, res) => {
 };
 
 const updateEvent = async (req, res) => {
-  console.log(req.params.id, req.body);
+  console.log("ID recibido:", req.params.id, "Tipo:", typeof req.params.id);
+
   try {
     const updatedEvent = await eventsModel.updateEvent(req.params.id, req.body);
     res.json(updatedEvent);
