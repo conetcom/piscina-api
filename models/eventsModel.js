@@ -23,7 +23,7 @@ const updateEvent = async (id, event) => {
   const { title, start, fin, category} = event;
   const result = await db.query(
     'UPDATE events SET title = $1, start = $2, fin = $3, 4 = category WHERE id = $5 RETURNING *',
-    [title, start, fin, category, parseInt(id)]
+    [title, start, fin, category, id]
   );
   return result.rows[0];
 };

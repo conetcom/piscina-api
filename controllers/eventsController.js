@@ -20,10 +20,10 @@ const createEvent = async (req, res) => {
 };
 
 const updateEvent = async (req, res) => {
-  console.log("ID recibido:", req.params.id, "Tipo:", typeof req.params.id);
-
-  try {
-    const updatedEvent = await eventsModel.updateEvent(req.params.id, req.body);
+   try {
+     const id = parseInt(req.params.id, 10); // convierte a entero seguro
+     console.log(id);
+    const updatedEvent = await eventsModel.updateEvent(id, req.body);
     res.json(updatedEvent);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar evento' });
